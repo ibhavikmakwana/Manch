@@ -1,0 +1,11 @@
+{
+    "login": "પ્રવેશ કરો",
+    "signUp": "સાઇન અપ કરો",
+    "email": "ઇમેઇલ",
+    "enterYourEmail": "તમારું ઈમેલ એડ્રેસ લખો",
+    "password": "પાસવર્ડ",
+    "enterYourPassword": "તમારો પાસવર્ડ નાખો",
+    "forgotPassword": "પાસવર્ડ ભૂલી ગયા છો?",
+    "logOut": "લૉગ આઉટ",
+    "confirmPassword": "પાસવર્ડની પુષ્ટિ કરો"
+}

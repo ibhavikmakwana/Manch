@@ -1,0 +1,11 @@
+{
+    "login": "लॉग इन करें",
+    "signUp": "साइन अप करें",
+    "email": "ईमेल",
+    "enterYourEmail": "अपना ईमेल दर्ज करें",
+    "password": "कुंजिका",
+    "enterYourPassword": "अपना पासवर्ड डालें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "logOut": "लॉग आउट",
+    "confirmPassword": "पासवर्ड की पुष्टि कीजिये"
+}
