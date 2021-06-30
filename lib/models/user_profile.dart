@@ -25,6 +25,62 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
+import 'package:mobx/mobx.dart';
+
+part 'user_profile.g.dart';
+
+@jsonSerializable
+class UserProfile extends _UserProfile with _$UserProfile {
+  UserProfile({
+    final String? id,
+    String? email,
+    String? username,
+    String? avatarUrl,
+    String? about,
+    String? firstName,
+    String? lastName,
+  }) : super(
+          id: id,
+          email: email,
+          username: username,
+          avatarUrl: avatarUrl,
+          about: about,
+          firstName: firstName,
+          lastName: lastName,
+        );
+}
+
+@jsonSerializable
+abstract class _UserProfile with Store {
+  @JsonProperty(name: 'id')
+  final String? id;
+
+  @JsonProperty(name: 'email')
+  String? email;
+
+  @JsonProperty(name: 'user_name')
+  String? username;
+
+  @JsonProperty(name: 'first_name')
+  String? firstName;
+
+  @JsonProperty(name: 'last_name')
+  String? lastName;
+
+  @JsonProperty(name: 'avatar_url')
+  String? avatarUrl;
+
+  @JsonProperty(name: 'about')
+  String? about;
+
+  _UserProfile({
+    this.id,
+    this.email,
+    this.username,
+    this.avatarUrl,
+    this.about,
+    this.firstName,
+    this.lastName,
+  });
 }

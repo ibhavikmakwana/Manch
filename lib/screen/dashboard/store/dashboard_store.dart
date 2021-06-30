@@ -25,6 +25,32 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
+
+part 'dashboard_store.g.dart';
+
+class DashboardStore = _DashboardStore with _$DashboardStore;
+
+abstract class _DashboardStore with Store {
+  _DashboardStore() {
+    pageController = PageController(initialPage: selectedBottomNavItem.index);
+  }
+  @observable
+  BottomNavItem selectedBottomNavItem = BottomNavItem.HOME;
+
+  late final PageController pageController;
+
+  @action
+  void switchBottomItem(BottomNavItem item) {
+    if (item == selectedBottomNavItem) return;
+    selectedBottomNavItem = item;
+    pageController.animateToPage(
+      selectedBottomNavItem.index,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
+    );
+  }
 }
+
+enum BottomNavItem { HOME, SEARCH, MESSAGES, PROFILE }

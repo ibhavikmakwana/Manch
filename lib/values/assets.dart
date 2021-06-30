@@ -25,6 +25,12 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+class SVGs {
+  static const String _basePath = 'assets/svg/';
+
+  static const String icHome = "${_basePath}ic_home.svg";
+  static const String icMessage = "${_basePath}ic_message.svg";
+  static const String icPlus = "${_basePath}ic_plus.svg";
+  static const String icSend = "${_basePath}ic_send.svg";
+  static const String icUser = "${_basePath}ic_user.svg";
 }

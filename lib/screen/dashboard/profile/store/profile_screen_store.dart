@@ -25,6 +25,46 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mobx/mobx.dart';
+import 'package:supabase_playground/core/supabase/supabase_client.dart';
+import 'package:supabase_playground/models/user_profile.dart';
+
+part 'profile_screen_store.g.dart';
+
+class ProfileScreenStore = _ProfileScreenStore with _$ProfileScreenStore;
+
+abstract class _ProfileScreenStore with Store {
+  _ProfileScreenStore() {
+    _userNameController = TextEditingController();
+  }
+  late final TextEditingController _userNameController;
+
+  @action
+  updateProfile() async {
+    try {
+      final response = await SBClient.instance?.client
+          .from('profiles')
+          .update(
+            JsonMapper.toMap(
+              UserProfile(
+                username: '${_userNameController.text}',
+              ),
+            )!,
+          )
+          .execute();
+      if (response?.error != null) {
+        debugPrint('Error: ${response?.error?.message}');
+        return false;
+      } else {
+        debugPrint('Success Response: ${response?.toJson()}');
+        return true;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
 }

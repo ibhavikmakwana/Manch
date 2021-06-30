@@ -27,7 +27,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/screen/home/home_screen.dart';
+import 'package:supabase_playground/screen/dashboard/dashboard.dart';
 import 'package:supabase_playground/screen/onboarding/login_sign_up_screen.dart';
 import 'package:supabase_playground/screen/onboarding/splash_screen.dart';
 
@@ -45,9 +45,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => LoginSignUpScreen(),
         );
-      case Routes.home:
+      case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => HomeScreen(),
+          builder: (_) => Dashboard(),
         );
       default:
         return _unknownRoute();

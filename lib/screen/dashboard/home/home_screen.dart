@@ -25,6 +25,43 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:supabase_playground/core/supabase/prefrence.dart';
+import 'package:supabase_playground/core/supabase/supabase_client.dart';
+import 'package:supabase_playground/values/routes.dart';
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppBar(
+          title: Text(
+            'Home',
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
+          centerTitle: false,
+          elevation: 0,
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await SBClient.instance?.client.auth.signOut();
+                await SharedPreference.instance?.storage.deleteAll();
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  Routes.login,
+                  ModalRoute.withName(Routes.initial),
+                );
+              },
+              child: Text(
+                '${AppLocalizations.of(context)?.logOut}',
+                style: Theme.of(context).textTheme.button,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

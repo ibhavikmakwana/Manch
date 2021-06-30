@@ -1,7 +1,35 @@
+/*
+ * BSD 2-Clause License
+ *
+ * Copyright (c) 2021, Bhavik Makwana
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:supabase_playground/screen/onboarding/store/on_boarding_store.dart';
+import 'package:supabase_playground/widget/custom_button.dart';
 import 'package:supabase_playground/widget/custom_text_field.dart';
 import 'package:supabase_playground/widget/indicator_dot.dart';
 
@@ -135,17 +163,19 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     ),
                   },
                   const SizedBox(height: 24),
-                  ElevatedButton(
+                  CustomButton(
                     onPressed: () async {
+                      if (_onBoardingStore.isLoading) return;
                       if (_onBoardingStore.isLogin) {
                         _onBoardingStore.login(context);
                       } else {
                         await _onBoardingStore.signUp(context);
                       }
                     },
-                    child: Text(_onBoardingStore.isLogin
+                    isLoading: _onBoardingStore.isLoading,
+                    text: _onBoardingStore.isLogin
                         ? '${AppLocalizations.of(context)?.login}'
-                        : '${AppLocalizations.of(context)?.signUp}'),
+                        : '${AppLocalizations.of(context)?.signUp}',
                   ),
                   const SizedBox(height: 32),
                 ],

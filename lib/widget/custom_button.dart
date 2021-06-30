@@ -25,6 +25,34 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-class AppConstant {
-  static const String kSession = 'session';
+import 'package:flutter/material.dart';
+
+class CustomButton extends StatelessWidget {
+  final bool isLoading;
+  final VoidCallback? onPressed;
+  final String? text;
+
+  const CustomButton({
+    Key? key,
+    this.isLoading = false,
+    this.onPressed,
+    this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: isLoading
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.white,
+                ),
+              ),
+            )
+          : Text('$text'),
+    );
+  }
 }

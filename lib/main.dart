@@ -26,7 +26,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
+import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart'
+    show mobXAdapter;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:supabase_playground/main_store.dart';
 import 'package:supabase_playground/route_generator.dart';
@@ -34,7 +38,11 @@ import 'package:supabase_playground/screen/onboarding/splash_screen.dart';
 import 'package:supabase_playground/values/routes.dart';
 import 'package:supabase_playground/values/theme.dart';
 
+import 'main.reflectable.dart' show initializeReflectable;
+
 void main() {
+  initializeReflectable();
+  JsonMapper().useAdapter(mobXAdapter);
   runApp(MyApp());
 }
 
@@ -48,6 +56,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.initial,
       onGenerateRoute: RouteGenerator.generateRoute,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
+      debugShowCheckedModeBanner: false,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _mainStore.currentLocale,
       localeResolutionCallback: (
@@ -55,6 +64,11 @@ class MyApp extends StatelessWidget {
         Iterable<Locale> supportedLocales,
       ) {
         return locale;
+      },
+      builder: (context, child) {
+        SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(statusBarColor: Colors.white));
+        return child ?? SplashScreen();
       },
       home: SplashScreen(),
     );

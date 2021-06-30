@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
           await SBClient.instance?.client.auth.recoverSession(sessionJson);
       if (session != null) {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home,
+          Routes.dashboard,
           (Route<dynamic> route) => false,
         );
       } else {
