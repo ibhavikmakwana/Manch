@@ -26,7 +26,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/core/supabase/supabase_client.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -43,27 +42,7 @@ class ProfileScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
-            onPressed: () async {
-              SBClient.instance?.client
-                  .from('profiles')
-                  .insert(
-                    {
-                      'id': SBClient.instance?.client.auth.currentUser?.id,
-                      'username': 'ibhavikmakwana',
-                      'avatar_url':
-                          'https://avatars.githubusercontent.com/u/22465800?v=4',
-                      'about':
-                          'Flutter Enthusiast | Software Engineer | Speaker | Blogger | Google Certified Associate Android Developer',
-                      'email': 'bhavikmakwana43@gmail.com'
-                    },
-                  )
-                  .execute()
-                  .catchError(
-                    (error, stackTrace) =>
-                        debugPrint('Error: $error\nstackTrace: ${stackTrace}'),
-                  )
-                  .then((value) => print('Success: ${value.toJson()}'));
-            },
+            onPressed: () async {},
             child: Text('Save'),
           ),
         ),

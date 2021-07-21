@@ -32,6 +32,7 @@ import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:supabase_playground/configure_main_app.dart';
 import 'package:supabase_playground/main_store.dart';
 import 'package:supabase_playground/route_generator.dart';
 import 'package:supabase_playground/screen/onboarding/splash_screen.dart';
@@ -41,8 +42,10 @@ import 'package:supabase_playground/values/theme.dart';
 import 'main.reflectable.dart' show initializeReflectable;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   JsonMapper().useAdapter(mobXAdapter);
+  configureMainApp();
   runApp(MyApp());
 }
 
