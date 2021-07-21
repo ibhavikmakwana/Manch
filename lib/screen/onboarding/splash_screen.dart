@@ -27,17 +27,14 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/core/supabase/prefrence.dart';
-import 'package:supabase_playground/core/supabase/supabase_client.dart';
-import 'package:supabase_playground/values/app_constant.dart';
-import 'package:supabase_playground/values/routes.dart';
+import 'package:supabase_playground/core/supabase/auth_state.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,28 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    manageOnBoarding();
-  }
-
-  Future<void> manageOnBoarding() async {
-    final sessionJson = await SharedPreference.instance?.storage
-        .read(key: AppConstant.kSession);
-    if (sessionJson != null) {
-      final session =
-          await SBClient.instance?.client.auth.recoverSession(sessionJson);
-      if (session != null) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.dashboard,
-          (Route<dynamic> route) => false,
-        );
-      } else {
-        debugPrint('Something is not right');
-      }
-    } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Routes.login,
-        (Route<dynamic> route) => false,
-      );
-    }
+    Future.delayed(Duration(milliseconds: 2000), () {
+      recoverSupabaseSession();
+    });
   }
 }

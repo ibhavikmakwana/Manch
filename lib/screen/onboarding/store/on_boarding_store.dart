@@ -28,12 +28,10 @@
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gotrue/src/user.dart';
 import 'package:mobx/mobx.dart';
-import 'package:supabase_playground/core/supabase/prefrence.dart';
-import 'package:supabase_playground/core/supabase/supabase_client.dart';
+import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
-import 'package:supabase_playground/values/app_constant.dart';
 import 'package:supabase_playground/values/routes.dart';
 
 part 'on_boarding_store.g.dart';
@@ -75,13 +73,14 @@ abstract class _OnBoardingStore with Store {
     }
 
     isLoading = true;
+
     try {
       final response =
-          await SBClient.instance?.client.auth.signUp(email, password);
-      if (response?.error != null) {
-        debugPrint('${response?.error?.message}');
+          await Supabase.instance.client.auth.signUp(email, password);
+      if (response.error != null) {
+        debugPrint('${response.error?.message}');
       } else {
-        final doLogin = await createUserInDB(response?.data?.user);
+        final doLogin = await createUserInDB(response.data?.user);
         if (doLogin) await login(context);
       }
     } catch (e) {
@@ -98,15 +97,17 @@ abstract class _OnBoardingStore with Store {
         UserProfile(id: user?.id, email: user?.email),
         SerializationOptions(ignoreNullMembers: true),
       );
-      final response = await SBClient.instance?.client
+
+      final response = await Supabase.instance.client
           .from('profiles')
           .insert(requestBody)
           .execute();
-      if (response?.error != null) {
-        debugPrint('Error: ${response?.toJson()}');
+
+      if (response.error != null) {
+        debugPrint('Error: ${response.toJson()}');
         return false;
       } else {
-        debugPrint('Success Response: ${response?.toJson()}');
+        debugPrint('Success Response: ${response.toJson()}');
         return true;
       }
     } catch (e) {
@@ -124,14 +125,13 @@ abstract class _OnBoardingStore with Store {
     _validateEmailPassword(email, password);
     try {
       isLoading = true;
-      final response = await SBClient.instance?.client.auth.signIn(
+      final response = await Supabase.instance.client.auth.signIn(
         email: email,
         password: password,
       );
-      if (response?.error != null) {
-        debugPrint('${response?.error?.message}');
+      if (response.error != null) {
+        debugPrint('${response.error?.message}');
       } else {
-        await writeUserToStorage(response.toString());
         Navigator.of(context).pushNamedAndRemoveUntil(
           Routes.dashboard,
           (Route<dynamic> route) => false,
@@ -142,13 +142,6 @@ abstract class _OnBoardingStore with Store {
     } finally {
       isLoading = false;
     }
-  }
-
-  Future<void> writeUserToStorage(String? data) async {
-    SharedPreference.instance?.storage.write(
-      key: AppConstant.kSession,
-      value: data,
-    );
   }
 
   void _validateEmailPassword(String email, String password) {
