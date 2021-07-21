@@ -26,27 +26,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:supabase_playground/screen/dashboard/profile/edit_profile.dart';
+import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
+import 'package:supabase_playground/screen/dashboard/profile/view_profile.dart';
+import 'package:supabase_playground/widget/base_widget_switcher.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final ProfileScreenStore _store;
+
+  @override
+  void initState() {
+    super.initState();
+    _store = ProfileScreenStore();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            onChanged: (value) {},
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            onPressed: () async {},
-            child: Text('Save'),
-          ),
-        ),
-      ],
+    return Observer(
+      builder: (_) => BaseWidgetSwitcher(
+        state: _store.profileScreenState,
+        successWidget: ProfileSuccessWidget(store: _store),
+      ),
+    );
+  }
+}
+
+class ProfileSuccessWidget extends StatelessWidget {
+  final ProfileScreenStore? store;
+  const ProfileSuccessWidget({Key? key, this.store}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer(
+      builder: (BuildContext context) {
+        if (store?.editProfile ?? false) {
+          return EditProfile(store: store);
+        } else {
+          return ViewProfile(store: store);
+        }
+      },
     );
   }
 }

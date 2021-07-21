@@ -33,12 +33,12 @@ import 'package:supabase_playground/values/app_colors.dart';
 class AppTheme {
   static ThemeData? lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.screenBackground,
-    primaryColor: AppColors.primaryColor,
+    primaryColor: AppColors.blue,
     accentColor: Colors.white,
     cardColor: Colors.white,
-    buttonColor: AppColors.primaryColor,
+    buttonColor: AppColors.blue,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.blue,
     ),
     bottomAppBarColor: Colors.white,
     appBarTheme: const AppBarTheme(
@@ -68,7 +68,7 @@ class AppTheme {
       backgroundColor: Colors.white,
       showUnselectedLabels: false,
       showSelectedLabels: true,
-      selectedLabelStyle: TextStyle(color: AppColors.primaryColor),
+      selectedLabelStyle: TextStyle(color: AppColors.blue),
       selectedItemColor: AppColors.dark,
       unselectedItemColor: AppColors.gray,
       type: BottomNavigationBarType.fixed,

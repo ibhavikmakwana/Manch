@@ -39,9 +39,8 @@ class IndicatorDot extends StatelessWidget {
       height: 6,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isSelected ?? false
-            ? AppColors.primaryColor
-            : AppColors.screenBackground,
+        color:
+            isSelected ?? false ? AppColors.blue : AppColors.screenBackground,
       ),
       duration: const Duration(milliseconds: 350),
     );
