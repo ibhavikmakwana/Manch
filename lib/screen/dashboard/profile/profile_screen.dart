@@ -26,16 +26,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
+import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final ProfileScreenStore _store;
+
+  @override
+  void initState() {
+    super.initState();
+    _store = ProfileScreenStore();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppBar(),
+        AppBar(
+          title: Text(
+            'Profile',
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.settings),
+            ),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: TextField(
+            controller: _store.userNameController,
             onChanged: (value) {},
           ),
         ),

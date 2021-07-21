@@ -37,6 +37,7 @@ dependencies:
   mobx: ^2.0.1
   postgres: ^2.3.2
   supabase_flutter: ^0.0.4
+  provider:
 
 dev_dependencies:
   flutter_test:

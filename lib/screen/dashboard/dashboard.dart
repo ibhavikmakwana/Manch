@@ -36,6 +36,10 @@ import 'package:supabase_playground/values/assets.dart';
 import 'package:supabase_playground/widget/indicator_dot.dart';
 
 class Dashboard extends StatefulWidget {
+  const Dashboard({
+    Key? key,
+  }) : super(key: key);
+
   @override
   _DashboardState createState() => _DashboardState();
 }
