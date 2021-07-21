@@ -38,16 +38,14 @@ class UserProfile extends _UserProfile with _$UserProfile {
     String? username,
     String? avatarUrl,
     String? about,
-    String? firstName,
-    String? lastName,
+    String? name,
   }) : super(
           id: id,
           email: email,
           username: username,
           avatarUrl: avatarUrl,
           about: about,
-          firstName: firstName,
-          lastName: lastName,
+          name: name,
         );
 }
 
@@ -62,11 +60,8 @@ abstract class _UserProfile with Store {
   @JsonProperty(name: 'user_name')
   String? username;
 
-  @JsonProperty(name: 'first_name')
-  String? firstName;
-
-  @JsonProperty(name: 'last_name')
-  String? lastName;
+  @JsonProperty(name: 'name')
+  String? name;
 
   @JsonProperty(name: 'avatar_url')
   String? avatarUrl;
@@ -80,15 +75,13 @@ abstract class _UserProfile with Store {
     this.username,
     this.avatarUrl,
     this.about,
-    this.firstName,
-    this.lastName,
+    this.name,
   });
 
   copyWith({
     String? email,
     String? username,
-    String? firstName,
-    String? lastName,
+    String? name,
     String? avatarUrl,
     String? about,
   }) {
@@ -96,8 +89,7 @@ abstract class _UserProfile with Store {
       id: this.id,
       email: this.email = email ?? this.email,
       username: this.username = username ?? this.username,
-      firstName: this.firstName = firstName ?? this.firstName,
-      lastName: this.lastName = lastName ?? this.lastName,
+      name: this.name = name ?? this.name,
       avatarUrl: this.avatarUrl = avatarUrl ?? this.avatarUrl,
       about: this.about = about ?? this.about,
     );

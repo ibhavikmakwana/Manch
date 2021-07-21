@@ -26,9 +26,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
+import 'package:supabase_playground/widget/base_widget_switcher.dart';
 
 part 'profile_screen_store.g.dart';
 
@@ -40,90 +46,95 @@ abstract class _ProfileScreenStore with Store {
   }
 
   late final TextEditingController userNameController;
+  late final TextEditingController nameController;
+  late final TextEditingController aboutController;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   _init() async {
-    userNameController = TextEditingController();
-    // await getProfile();
+    await getProfile();
+    userNameController = TextEditingController(text: userProfile?.username);
+    nameController = TextEditingController(text: userProfile?.name);
+    aboutController = TextEditingController(text: userProfile?.about);
   }
 
   @observable
   UserProfile? userProfile;
 
-  /*@action
-  Future<void> getProfile() async {
-    final userPref = await SharedPreference.instance?.storage
-        .read(key: AppConstant.kCurrentUser);
-    if (userPref != null) {
+  @observable
+  bool editProfile = false;
+
+  @observable
+  BaseWidgetState profileScreenState = BaseWidgetState.LOADING;
+
+  @action
+  Future<void> getProfile({bool showLoader = false}) async {
+    try {
+      if (showLoader) profileScreenState = BaseWidgetState.LOADING;
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', '$userId')
+          .single()
+          .execute();
+      if (response.error != null) {
+        profileScreenState = BaseWidgetState.ERROR;
+        log('Error: ${response.error?.message}');
+      } else {
+        final encodedData = json.encode(response.data);
+        final decodedData = json.decode(encodedData);
+        profileScreenState = BaseWidgetState.SUCCESS;
+        userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
+        editProfile =
+            userProfile?.name == null || userProfile?.username == null;
+      }
+    } catch (e) {
+      profileScreenState = BaseWidgetState.ERROR;
+      log(e.toString());
+    }
+  }
+
+  @action
+  Future<void> updateProfile() async {
+    /// TODO: Add a better validations (Bhavik Makwana)
+    if (formKey.currentState!.validate()) {
       try {
-        userProfile = JsonMapper.deserialize(userPref);
-        final response = await SBClient.instance?.client
+        userProfile = userProfile?.copyWith(
+          username: '${userNameController.text.trim()}',
+          name: '${nameController.text.trim()}',
+          about: '${aboutController.text.trim()}',
+        );
+
+        final requestBody = JsonMapper.toMap(
+          userProfile,
+          SerializationOptions(ignoreNullMembers: true),
+        );
+        final response = await Supabase.instance.client
             .from('profiles')
-            .select()
+            .update(requestBody!)
             .eq('id', '${userProfile?.id}')
-            .single()
             .execute();
-        if (response?.error != null) {
-          log('Error: ${response?.error?.message}');
+
+        if (response.error != null) {
+          log('Error: ${response.toJson()}');
         } else {
-          final encodedData = json.encode(response?.data);
-          if (encodedData != userPref) {
-            final decodedData = json.decode(encodedData);
-            userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
-            SharedPreference.instance?.storage
-                .write(key: AppConstant.kCurrentUser, value: encodedData);
-          }
+          log('Success Response: ${response.toJson()}');
+          await getProfile();
         }
-        print('${userProfile?.username}');
       } catch (e) {
         log(e.toString());
       }
     }
-  }*/
+  }
 
-  /*@action
-  Future<bool> updateProfile() async {
-    try {
-      userProfile = userProfile?.copyWith(
-        username: '${userNameController.text}',
-      );
+  @action
+  Future<void> uploadAvatar() async {
+    // TODO: Implement Upload Avatar of the user (Bhavik Makwana).
+  }
 
-      // {
-      //   'user_name': 'bhavik',
-      //   'updated_at': DateTime.now().toIso8601String()
-      // },
-      final requestBody = JsonMapper.toMap(
-        userProfile,
-        SerializationOptions(ignoreNullMembers: true),
-      );
-      final response = await SBClient.instance?.client
-          .from('profiles')
-          .update(
-            JsonMapper.toMap(
-              UserProfile(
-                id: userProfile?.id,
-                firstName: 'Bhavik',
-                lastName: 'Makwana',
-                about: 'test',
-                avatarUrl: 'test',
-                username: 'bhavik',
-                email: userProfile?.email,
-              ),
-              SerializationOptions(ignoreNullMembers: true),
-            )!,
-          )
-          .eq('id', '${userProfile?.id}')
-          .execute();
-      if (response?.error != null) {
-        log('Error: ${response?.toJson()}');
-        return false;
-      } else {
-        log('Success Response: ${response?.toJson()}');
-        await getProfile();
-        return true;
-      }
-    } catch (e) {
-      log(e.toString());
-      return false;
-    }
-  }*/
+  void dispose() {
+    userNameController.dispose();
+    nameController.dispose();
+    aboutController.dispose();
+  }
 }

@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         SystemChrome.setSystemUIOverlayStyle(
             SystemUiOverlayStyle(statusBarColor: Colors.white));
-        return child ?? SplashScreen();
+        return child!;
       },
       home: SplashScreen(),
     );
