@@ -65,3 +65,10 @@ flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supab
 That's it! You'll be able to run this app, Ping me if you stuck on any step.
 
 Let's create an open source alternative of the social media apps out there together.
+
+
+
+## Design Credit
+https://www.figma.com/proto/pVVxJrrPmgo2OR2D5yEj0o/dianfei-SocialAppUIKit-Updated-(Community)?node-id=25%3A1577&scaling=min-zoom
+
+
