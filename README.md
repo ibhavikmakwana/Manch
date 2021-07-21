@@ -1,16 +1,67 @@
-# supabase_playground
-
-A new Flutter project.
+# Social Media App (नाम में क्या रखा है :P)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run this Project you'll need an account on the [Supbase](https://app.supabase.io/).
 
-A few resources to get you started if this is your first Flutter project:
+1. After creating an account run below query from the Supabase SQL editor to create required table.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Create a table for Public Profiles
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+create table profiles (
+  id uuid references auth.users not null,
+  updated_at timestamp with time zone,
+  user_name text unique,
+  avatar_url text,
+  email text,
+  name text,
+  about text,
+
+  primary key (id),
+  unique(user_name)
+);
+
+alter table profiles enable row level security;
+
+create policy "Public profiles are viewable by everyone."
+  on profiles for select
+  using ( true );
+
+create policy "Users can insert their own profile."
+  on profiles for insert
+  with check ( auth.uid() = id );
+
+create policy "Users can update own profile."
+  on profiles for update
+  using ( auth.uid() = id );
+
+-- Set up Realtime!
+begin;
+  drop publication if exists supabase_realtime;
+  create publication supabase_realtime;
+commit;
+alter publication supabase_realtime add table profiles;
+
+-- Set up Storage!
+insert into storage.buckets (id, name)
+values ('avatars', 'avatars');
+
+create policy "Avatar images are publicly accessible."
+  on storage.objects for select
+  using ( bucket_id = 'avatars' );
+
+create policy "Anyone can upload an avatar."
+  on storage.objects for insert
+  with check ( bucket_id = 'avatars' );
+```
+
+2. After successfully running above query get the Base url and Base key and pass it to the command line args. while running flutter app.
+
+```dart
+flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key
+```
+
+That's it! You'll be able to run this app, Ping me if you stuck on any step.
+
+Let's create an open source alternative of the social media apps out there together.
