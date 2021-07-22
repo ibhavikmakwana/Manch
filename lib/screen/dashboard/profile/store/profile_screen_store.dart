@@ -37,6 +37,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path/path.dart';
+import 'package:storage_client/src/fetch.dart' show StorageResponse;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
 import 'package:supabase_playground/screen/dashboard/profile/widget/image_picker_options_dialog.dart';
@@ -150,19 +151,25 @@ abstract class _ProfileScreenStore with Store {
       final imageExt = extension(file!.path);
       final fileName = userProfile?.id;
 
-      final response = await Supabase.instance.client.storage
-          .from('avatars')
-          .upload('$fileName$imageExt', file);
+      StorageResponse<String> response;
+      if (userProfile?.avatarUrl != null) {
+        response = await Supabase.instance.client.storage
+            .from('avatars')
+            .update('$fileName$imageExt', file);
+      } else {
+        response = await Supabase.instance.client.storage
+            .from('avatars')
+            .upload('$fileName$imageExt', file);
+      }
 
       if (response.hasError) {
         log('Status code: ${response.error?.statusCode}\nError: ${response.error?.error}\nMessage: ${response.error?.message}');
       } else {
         log('Success response: ${response.data}');
-        final avatarURL = Supabase.instance.client.storage
+        final avatarURL = await Supabase.instance.client.storage
             .from('avatars')
-            .getPublicUrl('$fileName$imageExt')
-            .data;
-        userProfile = userProfile?.copyWith(avatarUrl: avatarURL);
+            .createSignedUrl('$fileName$imageExt', 30 * 100);
+        userProfile = userProfile?.copyWith(avatarUrl: avatarURL.data);
         updateProfile(doValidate: false);
       }
     }
