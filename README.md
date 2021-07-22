@@ -22,8 +22,6 @@ create table profiles (
   unique(user_name)
 );
 
-alter table profiles enable row level security;
-
 create policy "Public profiles are viewable by everyone."
   on profiles for select
   using ( true );
@@ -35,13 +33,6 @@ create policy "Users can insert their own profile."
 create policy "Users can update own profile."
   on profiles for update
   using ( auth.uid() = id );
-
--- Set up Realtime!
-begin;
-  drop publication if exists supabase_realtime;
-  create publication supabase_realtime;
-commit;
-alter publication supabase_realtime add table profiles;
 
 -- Set up Storage!
 insert into storage.buckets (id, name)
