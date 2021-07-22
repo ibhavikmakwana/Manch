@@ -58,6 +58,12 @@ That's it! You'll be able to run this app, Ping me if you stuck on any step.
 Let's create an open source alternative of the social media apps out there together.
 
 
+## Generating files
+- `flutter pub get` [ to download dependencies ]
+- `flutter pub run build_runner build` [ to generate code ].
+> If code generation fails, consider running it with the flag `--delete-conflicting-outputs` 
+
+
 
 ## Design Credit
 https://www.figma.com/proto/pVVxJrrPmgo2OR2D5yEj0o/dianfei-SocialAppUIKit-Updated-(Community)?node-id=25%3A1577&scaling=min-zoom
