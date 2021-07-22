@@ -59,8 +59,7 @@ Let's create an open source alternative of the social media apps out there toget
 
 
 ## Generating files
-- `flutter pub get` [ to download dependencies ]
-- `flutter pub run build_runner build` [ to generate code ].
+- `flutter pub run build_runner build`
 > If code generation fails, consider running it with the flag `--delete-conflicting-outputs` 
 
 
