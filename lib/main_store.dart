@@ -39,8 +39,8 @@ abstract class _MainStore with Store {
 
   @action
   void setCurrentLocale(String languageCode) {
-    AppLocalizations.supportedLocales.forEach((element) {
+    for (final element in AppLocalizations.supportedLocales) {
       if (element.languageCode == languageCode) currentLocale = element;
-    });
+    }
   }
 }

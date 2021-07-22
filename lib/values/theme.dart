@@ -31,13 +31,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_playground/values/app_colors.dart';
 
 class AppTheme {
+  AppTheme();
+
+  static AppTheme? _current;
+
+  // ignore: prefer_constructors_over_static_methods
+  static AppTheme get current {
+    _current ??= AppTheme();
+    return _current!;
+  }
+
   static ThemeData? lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.screenBackground,
     primaryColor: AppColors.blue,
     accentColor: Colors.white,
     cardColor: Colors.white,
     buttonColor: AppColors.blue,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.blue,
     ),
     bottomAppBarColor: Colors.white,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum BaseWidgetState { SUCCESS, ERROR, LOADING, EMPTY }
+enum BaseWidgetState { success, error, loading, empty }
 
 class BaseWidgetSwitcher extends StatelessWidget {
   final BaseWidgetState state;
@@ -11,7 +11,7 @@ class BaseWidgetSwitcher extends StatelessWidget {
 
   const BaseWidgetSwitcher({
     Key? key,
-    this.state = BaseWidgetState.LOADING,
+    this.state = BaseWidgetState.loading,
     this.successWidget = const SizedBox.shrink(),
     this.errorWidget = const SizedBox.shrink(),
     this.loadingWidget = const Center(child: CircularProgressIndicator()),
@@ -21,16 +21,16 @@ class BaseWidgetSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (state) {
-      case BaseWidgetState.SUCCESS:
+      case BaseWidgetState.success:
         return successWidget;
-      case BaseWidgetState.ERROR:
+      case BaseWidgetState.error:
         return errorWidget;
-      case BaseWidgetState.LOADING:
+      case BaseWidgetState.loading:
         return loadingWidget;
-      case BaseWidgetState.EMPTY:
+      case BaseWidgetState.empty:
         return emptyWidget;
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
+import 'package:supabase_playground/widget/network_cache_images.dart';
 
 class ViewProfile extends StatelessWidget {
   final ProfileScreenStore? store;
@@ -35,11 +36,10 @@ class ViewProfile extends StatelessWidget {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('${store?.userProfile?.avatarUrl}'),
+                    NetworkCacheImages(
+                      imageUrl: store?.userProfile?.avatarUrl,
                       radius: 48,
-                      onBackgroundImageError: (_, st) {},
+                      circleAvatar: true,
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -47,7 +47,7 @@ class ViewProfile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${store?.userProfile?.name}',
+                            store?.userProfile?.name ?? '',
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           const SizedBox(height: 8),
@@ -63,7 +63,7 @@ class ViewProfile extends StatelessWidget {
                 const SizedBox(height: 16),
                 if (store?.userProfile?.about != null) ...{
                   Text(
-                    '${store?.userProfile?.about}',
+                    store?.userProfile?.about ?? '',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(height: 16),
