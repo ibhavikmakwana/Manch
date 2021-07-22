@@ -78,7 +78,7 @@ abstract class _OnBoardingStore with Store {
       final response =
           await Supabase.instance.client.auth.signUp(email, password);
       if (response.error != null) {
-        debugPrint('${response.error?.message}');
+        debugPrint(response.error?.message);
       } else {
         final doLogin = await createUserInDB(response.data?.user);
         if (doLogin) await login(context);
@@ -95,7 +95,7 @@ abstract class _OnBoardingStore with Store {
     try {
       final requestBody = JsonMapper.toMap(
         UserProfile(id: user?.id, email: user?.email),
-        SerializationOptions(ignoreNullMembers: true),
+        const SerializationOptions(ignoreNullMembers: true),
       );
 
       final response = await Supabase.instance.client
@@ -130,7 +130,7 @@ abstract class _OnBoardingStore with Store {
         password: password,
       );
       if (response.error != null) {
-        debugPrint('${response.error?.message}');
+        debugPrint(response.error?.message);
       } else {
         Navigator.of(context).pushNamedAndRemoveUntil(
           Routes.dashboard,

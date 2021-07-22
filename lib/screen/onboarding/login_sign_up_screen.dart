@@ -63,10 +63,9 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
             child: Observer(
               builder: (_) => Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 32),
-                  FlutterLogo(
+                  const FlutterLogo(
                     size: 64,
                     style: FlutterLogoStyle.stacked,
                   ),
@@ -81,7 +80,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             return;
                           }
                         },
-                        title: AppLocalizations.of(context)?.login,
+                        title: AppLocalizations.of(context)?.login ?? '',
                         isSelected: _onBoardingStore.isLogin,
                       ),
                       CustomOnBoardingTab(
@@ -92,14 +91,14 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                             return;
                           }
                         },
-                        title: AppLocalizations.of(context)?.signUp,
+                        title: AppLocalizations.of(context)?.signUp ?? '',
                         isSelected: !_onBoardingStore.isLogin,
                       ),
                     ],
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    '${AppLocalizations.of(context)?.email}',
+                    AppLocalizations.of(context)?.email ?? '',
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
@@ -111,11 +110,12 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     focusNode: _onBoardingStore.emailFocusNode,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    hintText: AppLocalizations.of(context)?.enterYourEmail,
+                    hintText:
+                        AppLocalizations.of(context)?.enterYourEmail ?? '',
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    '${AppLocalizations.of(context)?.password}',
+                    AppLocalizations.of(context)?.password ?? '',
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
@@ -129,7 +129,8 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         ? TextInputAction.done
                         : TextInputAction.next,
                     obscureText: true,
-                    hintText: AppLocalizations.of(context)?.enterYourPassword,
+                    hintText:
+                        AppLocalizations.of(context)?.enterYourPassword ?? '',
                   ),
                   if (_onBoardingStore.isLogin) ...{
                     const SizedBox(height: 24),
@@ -138,7 +139,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       child: TextButton(
                         onPressed: () {},
                         child: Text(
-                          '${AppLocalizations.of(context)?.forgotPassword}',
+                          AppLocalizations.of(context)?.forgotPassword ?? '',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ),
@@ -146,7 +147,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                   } else ...{
                     const SizedBox(height: 24),
                     Text(
-                      '${AppLocalizations.of(context)?.confirmPassword}',
+                      AppLocalizations.of(context)?.confirmPassword ?? '',
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1
@@ -159,7 +160,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       textInputAction: TextInputAction.done,
                       obscureText: true,
                       hintText:
-                          '${AppLocalizations.of(context)?.confirmPassword}',
+                          AppLocalizations.of(context)?.confirmPassword ?? '',
                     ),
                   },
                   const SizedBox(height: 24),
@@ -174,8 +175,8 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     },
                     isLoading: _onBoardingStore.isLoading,
                     text: _onBoardingStore.isLogin
-                        ? '${AppLocalizations.of(context)?.login}'
-                        : '${AppLocalizations.of(context)?.signUp}',
+                        ? AppLocalizations.of(context)?.login ?? ''
+                        : AppLocalizations.of(context)?.signUp ?? '',
                   ),
                   const SizedBox(height: 32),
                 ],
@@ -211,7 +212,7 @@ class CustomOnBoardingTab extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  '$title',
+                  title!,
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isSelected ?? false

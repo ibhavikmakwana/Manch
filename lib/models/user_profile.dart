@@ -78,7 +78,7 @@ abstract class _UserProfile with Store {
     this.name,
   });
 
-  copyWith({
+  UserProfile copyWith({
     String? email,
     String? username,
     String? name,
@@ -86,7 +86,7 @@ abstract class _UserProfile with Store {
     String? about,
   }) {
     return UserProfile(
-      id: this.id,
+      id: id,
       email: this.email = email ?? this.email,
       username: this.username = username ?? this.username,
       name: this.name = name ?? this.name,

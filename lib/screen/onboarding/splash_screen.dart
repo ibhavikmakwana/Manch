@@ -37,7 +37,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text('Supabase Playground'),
       ),
@@ -47,7 +47,7 @@ class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       recoverSupabaseSession();
     });
   }

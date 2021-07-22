@@ -1,0 +1,8 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  exclude:
+    # generated code
+    - lib/*.reflectable.dart
+    - test/*.reflectable.dart
+    - lib/**/*.g.dart

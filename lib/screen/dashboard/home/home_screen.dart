@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                '${AppLocalizations.of(context)?.logOut}',
+                AppLocalizations.of(context)?.logOut ?? '',
                 style: Theme.of(context).textTheme.button,
               ),
             ),

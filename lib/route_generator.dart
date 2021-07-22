@@ -47,7 +47,7 @@ class RouteGenerator {
         );
       case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => Dashboard(),
+          builder: (_) => const Dashboard(),
         );
       default:
         return _unknownRoute();
@@ -58,7 +58,7 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(),
-        body: Center(
+        body: const Center(
           child: Text('Under Development'),
         ),
       );

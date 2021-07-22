@@ -75,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
         notchMargin: 8,
         clipBehavior: Clip.antiAlias,
         child: Observer(
-          builder: (_) => Container(
+          builder: (_) => SizedBox(
             height: 92,
             child: Row(
               children: [
@@ -83,28 +83,28 @@ class _DashboardState extends State<Dashboard> {
                   svgPath: SVGs.icHome,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 0,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.HOME);
+                    _dashboardStore.switchBottomItem(BottomNavItem.home);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icSend,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 1,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.SEARCH);
+                    _dashboardStore.switchBottomItem(BottomNavItem.search);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icMessage,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 2,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.MESSAGES);
+                    _dashboardStore.switchBottomItem(BottomNavItem.messages);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icUser,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 3,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.PROFILE);
+                    _dashboardStore.switchBottomItem(BottomNavItem.profile);
                   },
                 ),
               ],
@@ -135,7 +135,6 @@ class BottomAppBarItem extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(

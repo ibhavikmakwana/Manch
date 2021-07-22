@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/core/supabase/build_config.dart';
 
 void configureMainApp() {
-  final storage = FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
   final localStorage = LocalStorage(hasAccessToken: () {
     return storage.containsKey(key: supabasePersistSessionKey);
   }, accessToken: () {
@@ -14,8 +14,8 @@ void configureMainApp() {
     return storage.write(key: supabasePersistSessionKey, value: value);
   });
   Supabase.initialize(
-    url: BuildConfig.baseUrl,
-    anonKey: BuildConfig.baseKey,
+    url: BuildConfig.current.baseUrl,
+    anonKey: BuildConfig.current.baseKey,
     localStorage: localStorage,
   );
 }
