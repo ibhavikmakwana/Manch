@@ -33,4 +33,5 @@ class SVGs {
   static const String icPlus = "${_basePath}ic_plus.svg";
   static const String icSend = "${_basePath}ic_send.svg";
   static const String icUser = "${_basePath}ic_user.svg";
+  static const String logo = "${_basePath}logo.svg";
 }

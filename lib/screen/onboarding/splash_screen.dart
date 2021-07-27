@@ -28,6 +28,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:supabase_playground/core/supabase/auth_state.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:supabase_playground/values/app_colors.dart';
+import 'package:supabase_playground/values/assets.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -37,9 +40,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends AuthState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.blue,
       body: Center(
-        child: Text('Supabase Playground'),
+        child: SvgPicture.asset(SVGs.logo),
       ),
     );
   }

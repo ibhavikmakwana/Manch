@@ -2,7 +2,7 @@
     package="com.example.supabase_playground">
    <application
         android:label="supabase_playground"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
