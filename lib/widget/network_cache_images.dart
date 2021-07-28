@@ -26,14 +26,14 @@ class _NetworkCacheImagesState extends State<NetworkCacheImages> {
   Widget build(BuildContext context) {
     if (widget.circleAvatar) {
       return CircleAvatar(
-        backgroundImage: NetworkImage(
-          widget.imageUrl!,
+        backgroundImage: CachedNetworkImageProvider(
+          widget.imageUrl ?? '',
         ),
         radius: widget.radius,
       );
     } else {
       return CachedNetworkImage(
-        imageUrl: widget.imageUrl!,
+        imageUrl: widget.imageUrl ?? '',
         height: widget.height,
         width: widget.width,
         errorWidget: (_, __, ___) {

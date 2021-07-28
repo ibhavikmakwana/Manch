@@ -105,10 +105,7 @@ abstract class _ProfileScreenStore with Store {
   @action
   Future<void> updateProfile({bool doValidate = true}) async {
     /// TODO: Add a better validations (Bhavik Makwana)
-    if (doValidate) {
-      formKey.currentState!.validate();
-      return;
-    }
+    if (doValidate && !formKey.currentState!.validate()) return;
 
     try {
       userProfile = userProfile?.copyWith(
@@ -116,7 +113,6 @@ abstract class _ProfileScreenStore with Store {
         name: nameController.text.trim(),
         about: aboutController.text.trim(),
       );
-
       final requestBody = JsonMapper.toMap(
         userProfile,
         const SerializationOptions(ignoreNullMembers: true),
