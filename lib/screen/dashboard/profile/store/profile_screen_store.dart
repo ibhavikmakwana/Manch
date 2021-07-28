@@ -28,20 +28,19 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path/path.dart';
+import 'package:postgrest/src/postgrest_response.dart';
 import 'package:storage_client/src/fetch.dart' show StorageResponse;
+import 'package:storage_client/src/types.dart' show FileOptions;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
 import 'package:supabase_playground/screen/dashboard/profile/widget/image_picker_options_dialog.dart';
-import 'package:supabase_playground/values/app_colors.dart';
 import 'package:supabase_playground/widget/base_widget_switcher.dart';
 
 part 'profile_screen_store.g.dart';
@@ -89,10 +88,7 @@ abstract class _ProfileScreenStore with Store {
         profileScreenState = BaseWidgetState.error;
         log('Error: ${response.error?.message}');
       } else {
-        final encodedData = json.encode(response.data);
-        final decodedData = json.decode(encodedData);
-        profileScreenState = BaseWidgetState.success;
-        userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
+        _populateUserProfile(response);
         editProfile =
             userProfile?.name == null || userProfile?.username == null;
       }
@@ -102,9 +98,15 @@ abstract class _ProfileScreenStore with Store {
     }
   }
 
+  void _populateUserProfile(PostgrestResponse response) {
+    final encodedData = json.encode(response.data);
+    final decodedData = json.decode(encodedData);
+    profileScreenState = BaseWidgetState.success;
+    userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
+  }
+
   @action
   Future<void> updateProfile({bool doValidate = true}) async {
-    /// TODO: Add a better validations (Bhavik Makwana)
     if (doValidate) {
       formKey.currentState!.validate();
       return;
@@ -123,15 +125,14 @@ abstract class _ProfileScreenStore with Store {
       );
       final response = await Supabase.instance.client
           .from('profiles')
-          .update(requestBody!)
-          .eq('id', userProfile?.id)
+          .upsert(requestBody)
           .execute();
 
       if (response.error != null) {
         log('Error: ${response.toJson()}');
       } else {
         log('Success Response: ${response.toJson()}');
-        await getProfile();
+        _populateUserProfile(response);
       }
     } catch (e) {
       log(e.toString());
@@ -145,22 +146,26 @@ abstract class _ProfileScreenStore with Store {
         builder: (_) {
           return ImagePickerOptionsDialog();
         });
-    if (imageSource != null) {
-      final file = await getImage(imageSource);
 
-      final imageExt = extension(file!.path);
+    if (imageSource == null) return;
+    final ImagePicker _picker = ImagePicker();
+    final XFile? pickedFile = await _picker.pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      final size = await pickedFile.length();
+      if (size > 3000000) {
+        throw "The file is too large. Allowed maximum size is 3 MB.";
+      }
+      final bytes = await pickedFile.readAsBytes();
+      const fileOptions = FileOptions(upsert: true);
+      final imageExt = extension(pickedFile.path);
       final fileName = userProfile?.id;
 
       StorageResponse<String> response;
-      if (userProfile?.avatarUrl != null) {
-        response = await Supabase.instance.client.storage
-            .from('avatars')
-            .update('$fileName$imageExt', file);
-      } else {
-        response = await Supabase.instance.client.storage
-            .from('avatars')
-            .upload('$fileName$imageExt', file);
-      }
+
+      response = await Supabase.instance.client.storage
+          .from('avatars')
+          .uploadBinary('$fileName$imageExt', bytes, fileOptions: fileOptions);
 
       if (response.hasError) {
         log('Status code: ${response.error?.statusCode}\nError: ${response.error?.error}\nMessage: ${response.error?.message}');
@@ -173,33 +178,6 @@ abstract class _ProfileScreenStore with Store {
         updateProfile(doValidate: false);
       }
     }
-  }
-
-  Future<File?> getImage(ImageSource imageSource) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: imageSource);
-    return ImageCropper.cropImage(
-      sourcePath: image!.path,
-      cropStyle: CropStyle.circle,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Crop image',
-        toolbarColor: AppColors.dark,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.original,
-        lockAspectRatio: false,
-      ),
-      iosUiSettings: const IOSUiSettings(
-        minimumAspectRatio: 1.0,
-        title: 'Crop image',
-      ),
-    );
   }
 
   void dispose() {
