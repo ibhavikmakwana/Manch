@@ -52,7 +52,7 @@ class EditProfile extends StatelessWidget {
                       hintText: 'Enter User Name',
                     ),
                     validator: (String? value) {
-                      if (value == null || value.isEmpty) {
+                      if (value?.isEmpty ?? true) {
                         return 'Please enter user name.';
                       }
                       return null;

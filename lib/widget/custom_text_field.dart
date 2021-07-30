@@ -38,6 +38,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onSubmitted;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextField({
     Key? key,
@@ -51,6 +52,7 @@ class CustomTextField extends StatelessWidget {
     this.textInputAction,
     this.keyboardType,
     this.onSubmitted,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -65,13 +67,14 @@ class CustomTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         enabled: enabled,
         focusNode: focusNode,
         textInputAction: textInputAction,
         keyboardType: keyboardType,
-        onSubmitted: onSubmitted,
+        onFieldSubmitted: onSubmitted,
+        validator: validator,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,

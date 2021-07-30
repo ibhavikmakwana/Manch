@@ -93,8 +93,8 @@ abstract class _ProfileScreenStore with Store {
         final decodedData = json.decode(encodedData);
         profileScreenState = BaseWidgetState.success;
         userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
-        editProfile =
-            userProfile?.name == null || userProfile?.username == null;
+        editProfile = (userProfile?.name?.isEmpty ?? true) ||
+            (userProfile?.username?.isEmpty ?? true);
       }
     } catch (e) {
       profileScreenState = BaseWidgetState.error;
