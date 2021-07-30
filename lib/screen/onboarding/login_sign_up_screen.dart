@@ -61,93 +61,46 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
             child: Observer(
-              builder: (_) => Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 32),
-                  const FlutterLogo(
-                    size: 64,
-                    style: FlutterLogoStyle.stacked,
-                  ),
-                  const SizedBox(height: 32),
-                  Row(
-                    children: [
-                      CustomOnBoardingTab(
-                        onPressed: () {
-                          if (!_onBoardingStore.isLogin) {
-                            _onBoardingStore.isLogin = true;
-                          } else {
-                            return;
-                          }
-                        },
-                        title: AppLocalizations.of(context)?.login ?? '',
-                        isSelected: _onBoardingStore.isLogin,
-                      ),
-                      CustomOnBoardingTab(
-                        onPressed: () {
-                          if (_onBoardingStore.isLogin) {
-                            _onBoardingStore.isLogin = false;
-                          } else {
-                            return;
-                          }
-                        },
-                        title: AppLocalizations.of(context)?.signUp ?? '',
-                        isSelected: !_onBoardingStore.isLogin,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    AppLocalizations.of(context)?.email ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    controller: _onBoardingStore.emailController,
-                    focusNode: _onBoardingStore.emailFocusNode,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    hintText:
-                        AppLocalizations.of(context)?.enterYourEmail ?? '',
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    AppLocalizations.of(context)?.password ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    controller: _onBoardingStore.passwordController,
-                    focusNode: _onBoardingStore.passwordFocusNode,
-                    textInputAction: _onBoardingStore.isLogin
-                        ? TextInputAction.done
-                        : TextInputAction.next,
-                    obscureText: true,
-                    hintText:
-                        AppLocalizations.of(context)?.enterYourPassword ?? '',
-                  ),
-                  if (_onBoardingStore.isLogin) ...{
-                    const SizedBox(height: 24),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          AppLocalizations.of(context)?.forgotPassword ?? '',
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ),
+              builder: (_) => Form(
+                key: _onBoardingStore.onBoardingFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 32),
+                    const FlutterLogo(
+                      size: 64,
+                      style: FlutterLogoStyle.stacked,
                     ),
-                  } else ...{
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        CustomOnBoardingTab(
+                          onPressed: () {
+                            if (!_onBoardingStore.isLogin) {
+                              _onBoardingStore.isLogin = true;
+                            } else {
+                              return;
+                            }
+                          },
+                          title: AppLocalizations.of(context)?.login ?? '',
+                          isSelected: _onBoardingStore.isLogin,
+                        ),
+                        CustomOnBoardingTab(
+                          onPressed: () {
+                            if (_onBoardingStore.isLogin) {
+                              _onBoardingStore.isLogin = false;
+                            } else {
+                              return;
+                            }
+                          },
+                          title: AppLocalizations.of(context)?.signUp ?? '',
+                          isSelected: !_onBoardingStore.isLogin,
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 24),
                     Text(
-                      AppLocalizations.of(context)?.confirmPassword ?? '',
+                      AppLocalizations.of(context)?.email ?? '',
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1
@@ -155,31 +108,104 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      controller: _onBoardingStore.confirmPasswordController,
-                      focusNode: _onBoardingStore.confirmPasswordFocusNode,
-                      textInputAction: TextInputAction.done,
-                      obscureText: true,
+                      controller: _onBoardingStore.emailController,
+                      focusNode: _onBoardingStore.emailFocusNode,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      validator: (String? value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter valid email.';
+                        }
+                      },
                       hintText:
-                          AppLocalizations.of(context)?.confirmPassword ?? '',
+                          AppLocalizations.of(context)?.enterYourEmail ?? '',
                     ),
-                  },
-                  const SizedBox(height: 24),
-                  CustomButton(
-                    onPressed: () async {
-                      if (_onBoardingStore.isLoading) return;
-                      if (_onBoardingStore.isLogin) {
-                        _onBoardingStore.login(context);
-                      } else {
-                        await _onBoardingStore.signUp(context);
-                      }
+                    const SizedBox(height: 24),
+                    Text(
+                      AppLocalizations.of(context)?.password ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextField(
+                      controller: _onBoardingStore.passwordController,
+                      focusNode: _onBoardingStore.passwordFocusNode,
+                      textInputAction: _onBoardingStore.isLogin
+                          ? TextInputAction.done
+                          : TextInputAction.next,
+                      obscureText: true,
+                      validator: (String? value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Please enter password.';
+                        } else if (value != null && value.length < 6) {
+                          return 'Password should be more than 6 characters.';
+                        }
+                      },
+                      hintText:
+                          AppLocalizations.of(context)?.enterYourPassword ?? '',
+                    ),
+                    if (_onBoardingStore.isLogin) ...{
+                      const SizedBox(height: 24),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            AppLocalizations.of(context)?.forgotPassword ?? '',
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ),
+                      ),
+                    } else ...{
+                      const SizedBox(height: 24),
+                      Text(
+                        AppLocalizations.of(context)?.confirmPassword ?? '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        controller: _onBoardingStore.confirmPasswordController,
+                        focusNode: _onBoardingStore.confirmPasswordFocusNode,
+                        textInputAction: TextInputAction.done,
+                        validator: (String? value) {
+                          if (!_onBoardingStore.isLogin) {
+                            if (value?.isEmpty ?? true) {
+                              return 'Please confirm your password.';
+                            } else if (value != null &&
+                                value !=
+                                    _onBoardingStore.passwordController.text) {
+                              return 'Password and Confirm Password should be the same.';
+                            }
+                          }
+                        },
+                        obscureText: true,
+                        hintText:
+                            AppLocalizations.of(context)?.confirmPassword ?? '',
+                      ),
                     },
-                    isLoading: _onBoardingStore.isLoading,
-                    text: _onBoardingStore.isLogin
-                        ? AppLocalizations.of(context)?.login ?? ''
-                        : AppLocalizations.of(context)?.signUp ?? '',
-                  ),
-                  const SizedBox(height: 32),
-                ],
+                    const SizedBox(height: 24),
+                    CustomButton(
+                      onPressed: () async {
+                        if (_onBoardingStore.isLoading) return;
+                        if (_onBoardingStore.isLogin) {
+                          _onBoardingStore.login(context);
+                        } else {
+                          await _onBoardingStore.signUp(context);
+                        }
+                      },
+                      isLoading: _onBoardingStore.isLoading,
+                      text: _onBoardingStore.isLogin
+                          ? AppLocalizations.of(context)?.login ?? ''
+                          : AppLocalizations.of(context)?.signUp ?? '',
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),

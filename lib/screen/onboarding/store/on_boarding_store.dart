@@ -28,10 +28,13 @@
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
+import 'package:supabase_playground/values/app_colors.dart';
+import 'package:supabase_playground/values/extensions.dart';
 import 'package:supabase_playground/values/routes.dart';
 
 part 'on_boarding_store.g.dart';
@@ -47,6 +50,8 @@ abstract class _OnBoardingStore with Store {
     passwordFocusNode = FocusNode();
     confirmPasswordFocusNode = FocusNode();
   }
+
+  final GlobalKey<FormState> onBoardingFormKey = GlobalKey<FormState>();
 
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
@@ -65,12 +70,7 @@ abstract class _OnBoardingStore with Store {
   Future<void> signUp(BuildContext context) async {
     final email = emailController.text;
     final password = passwordController.text;
-    _validateEmailPassword(email, password);
-    if (email.isEmpty) {
-      return;
-    } else if (password.isEmpty) {
-      return;
-    }
+    if (!_validateEmailPassword()) return;
 
     isLoading = true;
 
@@ -78,6 +78,10 @@ abstract class _OnBoardingStore with Store {
       final response =
           await Supabase.instance.client.auth.signUp(email, password);
       if (response.error != null) {
+        context.showSnackBar(
+          response.error?.message ?? 'Something went wrong!',
+          color: AppColors.red,
+        );
         debugPrint(response.error?.message);
       } else {
         final doLogin = await createUserInDB(response.data?.user);
@@ -122,7 +126,8 @@ abstract class _OnBoardingStore with Store {
   Future<void> login(BuildContext context) async {
     final email = emailController.text;
     final password = passwordController.text;
-    _validateEmailPassword(email, password);
+    if (!_validateEmailPassword()) return;
+
     try {
       isLoading = true;
       final response = await Supabase.instance.client.auth.signIn(
@@ -130,6 +135,10 @@ abstract class _OnBoardingStore with Store {
         password: password,
       );
       if (response.error != null) {
+        context.showSnackBar(
+          response.error?.message ?? 'Something went wrong!',
+          color: AppColors.red,
+        );
         debugPrint(response.error?.message);
       } else {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -144,12 +153,8 @@ abstract class _OnBoardingStore with Store {
     }
   }
 
-  void _validateEmailPassword(String email, String password) {
-    if (email.isEmpty) {
-      return;
-    } else if (password.isEmpty) {
-      return;
-    }
+  bool _validateEmailPassword() {
+    return onBoardingFormKey.currentState?.validate() ?? false;
   }
 
   void dispose() {
