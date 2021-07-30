@@ -6,21 +6,27 @@ To run this Project you'll need an account on the [Supbase](https://app.supabase
 
 1. After creating an account run below query from the Supabase SQL editor to create required table.
 
-Create a table for Public Profiles
+**Create a table for Public Profiles**
 
 ```dart
-create table profiles (
-  id uuid references auth.users not null,
+-- Create a table for Profiles
+create table if not exists profiles (
+  id uuid references auth.users on delete cascade not null,
   updated_at timestamp with time zone,
+  created_at timestamp with time zone,
   user_name text unique,
-  avatar_url text,
-  email text,
+  email text unique,
   name text,
+  avatar_url text,
+  website text,
   about text,
 
   primary key (id),
-  unique(user_name)
+  unique(user_name),
+  unique(email)
 );
+
+alter table profiles enable row level security;
 
 create policy "Public profiles are viewable by everyone."
   on profiles for select
@@ -28,11 +34,18 @@ create policy "Public profiles are viewable by everyone."
 
 create policy "Users can insert their own profile."
   on profiles for insert
-  with check ( auth.uid() = id );
+  with check ( auth.role() = 'anon' );
 
 create policy "Users can update own profile."
   on profiles for update
   using ( auth.uid() = id );
+
+-- Set up Realtime!
+begin;
+  drop publication if exists supabase_realtime;
+  create publication supabase_realtime;
+commit;
+alter publication supabase_realtime add table profiles;
 
 -- Set up Storage!
 insert into storage.buckets (id, name)
@@ -44,6 +57,10 @@ create policy "Avatar images are publicly accessible."
 
 create policy "Anyone can upload an avatar."
   on storage.objects for insert
+  with check ( bucket_id = 'avatars' );
+
+create policy "Anyone can update an avatar."
+  on storage.objects for update
   with check ( bucket_id = 'avatars' );
 ```
 
