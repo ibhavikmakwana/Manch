@@ -4,9 +4,8 @@
 
 To run this Project you'll need an account on the [Supbase](https://app.supabase.io/).
 
-1. After creating an account run below query from the Supabase SQL editor to create required table.
 
-**Create a table for Public Profiles**
+1. After creating an account run below query from the Supabase SQL editor to create required table.
 
 ```dart
 -- Create a table for Profiles
@@ -64,7 +63,12 @@ create policy "Anyone can update an avatar."
   with check ( bucket_id = 'avatars' );
 ```
 
-2. After successfully running above query get the Base url and Base key and pass it to the command line args. while running flutter app.
+
+2. Go to `Authentication` => `settings` and make sure `Disable email confirmations` is Active or Enabled.
+<img width="771" alt="Screenshot 2021-07-31 at 11 05 09 AM" src="https://user-images.githubusercontent.com/22465800/127730215-958ad8a8-b4f2-4ddb-b024-5937c41c5797.png">
+
+
+3. After successfully running above query get the Base url and Base key and pass it to the command line args. while running flutter app.
 
 ```dart
 flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key
