@@ -1,4 +1,4 @@
-# Social Media App (नाम में क्या रखा है :P)
+# Social Media App (नाम में क्या रखा है :P) [![Analyze](https://github.com/ibhavikmakwana/supabase_playground/actions/workflows/analyze_actions.yml/badge.svg)](https://github.com/ibhavikmakwana/supabase_playground/actions/workflows/analyze_actions.yml)
 
 
 ## Screenshots
