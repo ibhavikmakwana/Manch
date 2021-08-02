@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter
+name: Flutter Analyze
 
 on:
   push:
@@ -20,14 +20,12 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - name: Installing flutter
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
       - name: Geting flutter dependencies
-      - run: flutter pub get
+        run: flutter pub get
       - name: Generating code
-      - run: flutter pub run build_runner build --delete-conflicting-outputs
-#       Analyze our Dart/Flutter code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: Analyzing Dart/Flutter code
-      - run: flutter analyze
+        run: flutter analyze
