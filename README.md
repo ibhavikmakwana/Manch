@@ -1,5 +1,17 @@
 # Social Media App (नाम में क्या रखा है :P)
 
+
+## Screenshots
+
+| Login | Login Error | Sign up |
+| ------------------ | --------------------------- | ------------------ |
+| <img src="https://user-images.githubusercontent.com/22465800/127871005-fe919608-5f61-4533-8911-0549c72a2471.png" height="400" alt="Screenshot"/>  | <img src="https://user-images.githubusercontent.com/22465800/127871123-560dc871-494b-4f0c-bea2-1d984be121ac.png" height="400" alt="Screenshot"/> | <img src="https://user-images.githubusercontent.com/22465800/127871162-dd9a04bf-b6ac-447b-a9f6-00ffe7baa9a4.png" height="400" alt="Screenshot"/> |
+
+| Edit Profile | Filled Edit Profile | Profile |
+| ------------------ | --------------------------- | ------------------ |
+| <img src="https://user-images.githubusercontent.com/22465800/127871283-83f1db8b-ad0f-4750-8536-f1a01b50861d.png" height="400" alt="Screenshot"/>  | <img src="https://user-images.githubusercontent.com/22465800/127871297-fd1d3a58-bdcb-448c-9d7c-8a510ab41646.png" height="400" alt="Screenshot"/> | <img src="https://user-images.githubusercontent.com/22465800/127871328-cfadb349-124e-4cb8-8986-7593bd9159d4.png" height="400" alt="Screenshot"/> |
+
+
 ## Getting Started
 
 To run this Project you'll need an account on the [Supbase](https://app.supabase.io/).
