@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter
+name: Flutter Analyze
 
 on:
   push:
@@ -20,7 +20,6 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - name: Flutter action
       - uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
