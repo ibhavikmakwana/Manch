@@ -1,0 +1,33 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - name: Installing flutter
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Geting flutter dependencies
+      - run: flutter pub get
+      - name: Generating code
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+#       Analyze our Dart/Flutter code
+      - name: Analyzing Dart/Flutter code
+      - run: flutter analyze
