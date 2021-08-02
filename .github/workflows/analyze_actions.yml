@@ -20,13 +20,13 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - name: Flutter action
+      - uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
       - name: Geting flutter dependencies
       - run: flutter pub get
       - name: Generating code
       - run: flutter pub run build_runner build --delete-conflicting-outputs
-#       Analyze our Dart/Flutter code
       - name: Analyzing Dart/Flutter code
       - run: flutter analyze
