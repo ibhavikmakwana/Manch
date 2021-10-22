@@ -28,8 +28,12 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'dart:io' as i;
 
+
+import 'dart:io' as i;
+import 'package:universal_io/io.dart' as ui;
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +147,9 @@ abstract class _ProfileScreenStore with Store {
           return ImagePickerOptionsDialog();
         });
     if (imageSource != null) {
+
       final ui.File? file = await getImage(imageSource);
+
 
       final imageExt = extension(file!.path);
       final fileName = userProfile?.id;
