@@ -41,12 +41,15 @@ class AppTheme {
     return _current!;
   }
 
-  static ThemeData? lightTheme = ThemeData(
+  static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.screenBackground,
     primaryColor: AppColors.blue,
-    accentColor: Colors.white,
+
+    //accentColor: Colors.white,
+    colorScheme: lightTheme.colorScheme.copyWith(secondary: Colors.white),
     cardColor: Colors.white,
-    buttonColor: AppColors.blue,
+    buttonTheme: lightTheme.buttonTheme.copyWith(buttonColor: AppColors.blue),
+    //buttonColor: AppColors.blue,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.blue,
     ),

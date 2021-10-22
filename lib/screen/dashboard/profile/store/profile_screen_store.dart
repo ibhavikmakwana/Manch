@@ -28,9 +28,8 @@
 
 import 'dart:convert';
 import 'dart:developer';
-
 import 'dart:io' as i;
-import 'package:universal_io/io.dart' as ui;
+
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +43,7 @@ import 'package:supabase_playground/models/user_profile.dart';
 import 'package:supabase_playground/screen/dashboard/profile/widget/image_picker_options_dialog.dart';
 import 'package:supabase_playground/values/app_colors.dart';
 import 'package:supabase_playground/widget/base_widget_switcher.dart';
+import 'package:universal_io/io.dart' as ui;
 
 part 'profile_screen_store.g.dart';
 
@@ -143,7 +143,7 @@ abstract class _ProfileScreenStore with Store {
           return ImagePickerOptionsDialog();
         });
     if (imageSource != null) {
-      final ui.File? file = await getImage(imageSource) as ui.File?;
+      final ui.File? file = await getImage(imageSource);
 
       final imageExt = extension(file!.path);
       final fileName = userProfile?.id;
