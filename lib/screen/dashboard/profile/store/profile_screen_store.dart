@@ -31,7 +31,6 @@ import 'dart:developer';
 import 'dart:io' as i;
 
 import 'package:dart_json_mapper/dart_json_mapper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,7 +142,7 @@ abstract class _ProfileScreenStore with Store {
           return ImagePickerOptionsDialog();
         });
     if (imageSource != null) {
-      final ui.File? file = await getImage(imageSource);
+      final i.File? file = await getImage(imageSource);
 
       final imageExt = extension(file!.path);
       final fileName = userProfile?.id;
@@ -152,11 +151,13 @@ abstract class _ProfileScreenStore with Store {
       if (userProfile?.avatarUrl != null) {
         response = await Supabase.instance.client.storage
             .from('avatars')
-            .update('$fileName$imageExt', file);
+            // ignore: unnecessary_cast
+            .update('$fileName$imageExt', file as ui.File);
       } else {
         response = await Supabase.instance.client.storage
             .from('avatars')
-            .upload('$fileName$imageExt', file);
+            // ignore: unnecessary_cast
+            .upload('$fileName$imageExt', file as ui.File);
       }
 
       if (response.hasError) {

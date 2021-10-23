@@ -46,9 +46,9 @@ class AppTheme {
     primaryColor: AppColors.blue,
 
     //accentColor: Colors.white,
-    colorScheme: lightTheme.colorScheme.copyWith(secondary: Colors.white),
+    colorScheme: ColorScheme.fromSwatch(accentColor: Colors.white),
     cardColor: Colors.white,
-    buttonTheme: lightTheme.buttonTheme.copyWith(buttonColor: AppColors.blue),
+    buttonTheme: const ButtonThemeData(buttonColor: AppColors.blue),
     //buttonColor: AppColors.blue,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.blue,
