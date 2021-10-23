@@ -29,7 +29,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' as i;
-
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -142,7 +141,9 @@ abstract class _ProfileScreenStore with Store {
           return ImagePickerOptionsDialog();
         });
     if (imageSource != null) {
+
       final i.File? file = await getImage(imageSource);
+      
 
       final imageExt = extension(file!.path);
       final fileName = userProfile?.id;
