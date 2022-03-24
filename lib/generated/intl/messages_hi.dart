@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a hi locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,22 +18,22 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'hi';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "confirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm password"),
-        "email": MessageLookupByLibrary.simpleMessage("Email"),
+            MessageLookupByLibrary.simpleMessage("पासवर्ड की पुष्टि कीजिये"),
+        "email": MessageLookupByLibrary.simpleMessage("ईमेल"),
         "enterYourEmail":
-            MessageLookupByLibrary.simpleMessage("Enter your email"),
+            MessageLookupByLibrary.simpleMessage("अपना ईमेल दर्ज करें"),
         "enterYourPassword":
-            MessageLookupByLibrary.simpleMessage("Enter your password"),
+            MessageLookupByLibrary.simpleMessage("अपना पासवर्ड डालें"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot Password?"),
-        "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "signUp": MessageLookupByLibrary.simpleMessage("Sign Up")
+            MessageLookupByLibrary.simpleMessage("पासवर्ड भूल गए?"),
+        "logOut": MessageLookupByLibrary.simpleMessage("लॉग आउट"),
+        "login": MessageLookupByLibrary.simpleMessage("लॉग इन करें"),
+        "password": MessageLookupByLibrary.simpleMessage("कुंजिका"),
+        "signUp": MessageLookupByLibrary.simpleMessage("साइन अप करें")
       };
 }

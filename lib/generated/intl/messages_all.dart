@@ -16,24 +16,24 @@ import 'package:intl/message_lookup_by_library.dart';
 import 'package:intl/src/intl_helpers.dart';
 
 import 'messages_en.dart' as messages_en;
-import 'messages_gu_IN.dart' as messages_gu_in;
-import 'messages_hi_IN.dart' as messages_hi_in;
+import 'messages_gu.dart' as messages_gu;
+import 'messages_hi.dart' as messages_hi;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
   'en': () => new Future.value(null),
-  'gu_IN': () => new Future.value(null),
-  'hi_IN': () => new Future.value(null),
+  'gu': () => new Future.value(null),
+  'hi': () => new Future.value(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
   switch (localeName) {
     case 'en':
       return messages_en.messages;
-    case 'gu_IN':
-      return messages_gu_in.messages;
-    case 'hi_IN':
-      return messages_hi_in.messages;
+    case 'gu':
+      return messages_gu.messages;
+    case 'hi':
+      return messages_hi.messages;
     default:
       return null;
   }
@@ -41,13 +41,13 @@ MessageLookupByLibrary? _findExact(String localeName) {
 
 /// User programs should call this before using [localeName] for messages.
 Future<bool> initializeMessages(String localeName) async {
-  final availableLocale = Intl.verifiedLocale(
+  var availableLocale = Intl.verifiedLocale(
       localeName, (locale) => _deferredLibraries[locale] != null,
       onFailure: (_) => null);
   if (availableLocale == null) {
     return new Future.value(false);
   }
-  final lib = _deferredLibraries[availableLocale];
+  var lib = _deferredLibraries[availableLocale];
   await (lib == null ? new Future.value(false) : lib());
   initializeInternalMessageLookup(() => new CompositeMessageLookup());
   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);
@@ -63,7 +63,7 @@ bool _messagesExistFor(String locale) {
 }
 
 MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {
-  final actualLocale =
+  var actualLocale =
       Intl.verifiedLocale(locale, _messagesExistFor, onFailure: (_) => null);
   if (actualLocale == null) return null;
   return _findExact(actualLocale);

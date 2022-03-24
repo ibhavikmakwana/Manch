@@ -38,7 +38,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path/path.dart';
-import 'package:storage_client/src/fetch.dart' show StorageResponse;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_playground/models/user_profile.dart';
 import 'package:supabase_playground/screen/dashboard/profile/widget/image_picker_options_dialog.dart';
@@ -175,7 +174,7 @@ abstract class _ProfileScreenStore with Store {
   Future<i.File?> getImage(ImageSource imageSource) async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: imageSource);
-    return ImageCropper.cropImage(
+    return ImageCropper().cropImage(
       sourcePath: image!.path,
       cropStyle: CropStyle.circle,
       aspectRatioPresets: [

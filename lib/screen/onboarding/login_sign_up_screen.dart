@@ -28,7 +28,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:supabase_playground/screen/onboarding/store/on_boarding_store.dart';
+import 'package:supabase_playground/values/extensions.dart';
 import 'package:supabase_playground/widget/custom_button.dart';
 import 'package:supabase_playground/widget/custom_text_field.dart';
 import 'package:supabase_playground/widget/indicator_dot.dart';
@@ -40,11 +42,20 @@ class LoginSignUpScreen extends StatefulWidget {
 
 class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   late final OnBoardingStore _onBoardingStore;
+  late final ReactionDisposer _reactionDisposer;
 
   @override
   void initState() {
     super.initState();
     _onBoardingStore = OnBoardingStore();
+    _reactionDisposer = when(
+      (_) => _onBoardingStore.errorMessage != null,
+      () {
+        context.showSnackBar(
+          _onBoardingStore.errorMessage!,
+        );
+      },
+    );
   }
 
   @override

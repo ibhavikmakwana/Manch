@@ -44,9 +44,8 @@ class AppTheme {
   static ThemeData? lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.screenBackground,
     primaryColor: AppColors.blue,
-    accentColor: Colors.white,
+    colorScheme: const ColorScheme.light(secondary: Colors.white),
     cardColor: Colors.white,
-    buttonColor: AppColors.blue,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.blue,
     ),

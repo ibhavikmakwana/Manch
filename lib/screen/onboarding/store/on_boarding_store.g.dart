@@ -39,6 +39,21 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
     });
   }
 
+  final _$errorMessageAtom = Atom(name: '_OnBoardingStore.errorMessage');
+
+  @override
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
   final _$signUpAsyncAction = AsyncAction('_OnBoardingStore.signUp');
 
   @override
@@ -65,7 +80,8 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
   String toString() {
     return '''
 isLogin: ${isLogin},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+errorMessage: ${errorMessage}
     ''';
   }
 }

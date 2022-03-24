@@ -28,12 +28,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_playground/screen/dashboard/home/home_screen.dart';
 import 'package:supabase_playground/screen/dashboard/profile/profile_screen.dart';
 import 'package:supabase_playground/screen/dashboard/store/dashboard_store.dart';
 import 'package:supabase_playground/values/app_colors.dart';
 import 'package:supabase_playground/values/assets.dart';
 import 'package:supabase_playground/widget/indicator_dot.dart';
+
+import 'profile/store/profile_screen_store.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({
@@ -46,9 +49,11 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late final DashboardStore _dashboardStore;
+  late final ProfileScreenStore _profileScreenStore;
   @override
   void initState() {
     super.initState();
+    _profileScreenStore = ProfileScreenStore()..getProfile(showLoader: true);
     _dashboardStore = DashboardStore();
   }
 
@@ -56,21 +61,21 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: PageView(
-        controller: _dashboardStore.pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          HomeScreen(),
-          Container(),
-          Container(),
-          ProfileScreen(),
+      body: MultiProvider(
+        providers: [
+          Provider(create: (_) => _profileScreenStore),
         ],
+        child: PageView(
+          controller: _dashboardStore.pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            HomeScreen(),
+            Container(),
+            Container(),
+            ProfileScreen(),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: SvgPicture.asset(SVGs.icPlus),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 8,
         clipBehavior: Clip.antiAlias,

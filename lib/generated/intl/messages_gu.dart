@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a gu locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,22 +18,22 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'gu';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "confirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm password"),
-        "email": MessageLookupByLibrary.simpleMessage("Email"),
+            MessageLookupByLibrary.simpleMessage("પાસવર્ડની પુષ્ટિ કરો"),
+        "email": MessageLookupByLibrary.simpleMessage("ઇમેઇલ"),
         "enterYourEmail":
-            MessageLookupByLibrary.simpleMessage("Enter your email"),
+            MessageLookupByLibrary.simpleMessage("તમારું ઈમેલ એડ્રેસ લખો"),
         "enterYourPassword":
-            MessageLookupByLibrary.simpleMessage("Enter your password"),
+            MessageLookupByLibrary.simpleMessage("તમારો પાસવર્ડ નાખો"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot Password?"),
-        "logOut": MessageLookupByLibrary.simpleMessage("Log out"),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "signUp": MessageLookupByLibrary.simpleMessage("Sign Up")
+            MessageLookupByLibrary.simpleMessage("પાસવર્ડ ભૂલી ગયા છો?"),
+        "logOut": MessageLookupByLibrary.simpleMessage("લૉગ આઉટ"),
+        "login": MessageLookupByLibrary.simpleMessage("પ્રવેશ કરો"),
+        "password": MessageLookupByLibrary.simpleMessage("પાસવર્ડ"),
+        "signUp": MessageLookupByLibrary.simpleMessage("સાઇન અપ કરો")
       };
 }

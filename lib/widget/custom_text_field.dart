@@ -33,6 +33,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final bool autocorrect;
   final int? maxLength;
+  final int? maxLines;
   final String? hintText;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
@@ -53,6 +54,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.onSubmitted,
     this.validator,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class CustomTextField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        maxLines: maxLines,
         enabled: enabled,
         focusNode: focusNode,
         textInputAction: textInputAction,
