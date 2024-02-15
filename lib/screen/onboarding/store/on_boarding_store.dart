@@ -30,7 +30,6 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:manch/values/routes.dart';
 
 part 'on_boarding_store.g.dart';
 
@@ -60,14 +59,12 @@ abstract class _OnBoardingStore with Store {
   bool isLoading = false;
 
   @action
-  Future<void> signUp(BuildContext context) async {
+  Future<bool> signUp() async {
     final email = emailController.text;
     final password = passwordController.text;
-    _validateEmailPassword(email, password);
-    if (email.isEmpty) {
-      return;
-    } else if (password.isEmpty) {
-      return;
+    final bool validated = _validateEmailPassword(email, password);
+    if (!validated) {
+      return false;
     }
 
     isLoading = true;
@@ -77,48 +74,51 @@ abstract class _OnBoardingStore with Store {
         email: email,
         password: password,
       );
+      return true;
     } catch (e, st) {
       if (e is PostgrestException) {
         log('Error: ${e.message}', stackTrace: st);
       }
       log(e.toString(), stackTrace: st);
+      return false;
     } finally {
       isLoading = false;
     }
   }
 
   @action
-  Future<void> login(BuildContext context) async {
+  Future<bool> login() async {
     final email = emailController.text;
     final password = passwordController.text;
-    _validateEmailPassword(email, password);
+    final bool validated = _validateEmailPassword(email, password);
+    if (!validated) {
+      return false;
+    }
     try {
       isLoading = true;
-      final response = await Supabase.instance.client.auth.signInWithPassword(
+      await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
-
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Routes.dashboard,
-        (Route<dynamic> route) => false,
-      );
+      return true;
     } catch (e, st) {
       if (e is PostgrestException) {
         log('Error: ${e.message}', stackTrace: st);
       }
       log(e.toString(), stackTrace: st);
+      return false;
     } finally {
       isLoading = false;
     }
   }
 
-  void _validateEmailPassword(String email, String password) {
+  bool _validateEmailPassword(String email, String password) {
     if (email.isEmpty) {
-      return;
+      return false;
     } else if (password.isEmpty) {
-      return;
+      return false;
     }
+    return true;
   }
 
   void dispose() {

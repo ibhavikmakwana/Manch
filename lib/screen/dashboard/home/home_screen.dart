@@ -28,6 +28,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:manch/values/routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -44,8 +45,7 @@ class HomeScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () async {
-                // await SBClient.instance?.client.auth.signOut();
-                // await SharedPreference.instance?.storage.deleteAll();
+                await Supabase.instance.client.auth.signOut();
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   Routes.login,
