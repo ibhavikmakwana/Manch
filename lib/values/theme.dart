@@ -28,28 +28,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_playground/values/app_colors.dart';
+import 'package:manch/values/app_colors.dart';
 
 class AppTheme {
-  AppTheme();
-
-  static AppTheme? _current;
-
-  // ignore: prefer_constructors_over_static_methods
-  static AppTheme get current {
-    _current ??= AppTheme();
-    return _current!;
-  }
-
   static ThemeData? lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.screenBackground,
     primaryColor: AppColors.blue,
-    colorScheme: const ColorScheme.light(secondary: Colors.white),
     cardColor: Colors.white,
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.blue,
     ),
-    bottomAppBarColor: Colors.white,
     appBarTheme: const AppBarTheme(
       color: Colors.white,
       elevation: 4,
@@ -95,5 +83,6 @@ class AppTheme {
         ),
       ),
     ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
   );
 }

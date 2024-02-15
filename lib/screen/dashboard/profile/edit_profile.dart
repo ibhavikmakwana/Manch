@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
-import 'package:supabase_playground/widget/network_cache_images.dart';
+import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
 
 class EditProfile extends StatelessWidget {
   final ProfileScreenStore? store;
@@ -34,25 +33,22 @@ class EditProfile extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {
-                      store?.uploadAvatar(context);
-                    },
-                    child: NetworkCacheImages(
-                      imageUrl: store?.userProfile?.avatarUrl,
-                      radius: 48,
-                      circleAvatar: true,
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      '${store?.userProfile?.avatarUrl}',
                     ),
+                    radius: 48,
+                    onBackgroundImageError: (_, st) {},
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: store?.userNameController,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter User Name',
                     ),
                     validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
+                      if (value == null || value.isEmpty) {
                         return 'Please enter user name.';
                       }
                       return null;
@@ -62,7 +58,7 @@ class EditProfile extends StatelessWidget {
                   TextFormField(
                     controller: store?.nameController,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter Name',
                     ),
                     validator: (String? value) {
@@ -78,7 +74,7 @@ class EditProfile extends StatelessWidget {
                     textInputAction: TextInputAction.done,
                     maxLines: 4,
                     maxLength: 150,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'About you',
                     ),
                   ),

@@ -5,8 +5,8 @@ import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_playground/models/post_response.dart';
-import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
+import 'package:manch/models/post_response.dart';
+import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
 
 part 'home_screen_store.g.dart';
 
@@ -40,7 +40,7 @@ abstract class _HomeScreenStore with Store {
           'user_id': Supabase.instance.client.auth.currentUser?.id,
           'user_meta': JsonMapper.toJson(profileStore.userProfile),
         },
-      ).execute();
+      );
 
       if (response.error != null) {
         errorMessage = response.error?.message ?? 'Something went wrong!';
@@ -54,19 +54,23 @@ abstract class _HomeScreenStore with Store {
   }
 
   Future<void> fetchPosts() async {
-    final response =
-        await Supabase.instance.client.from('user_post').select().execute();
+    try {
+      final response =
+          await Supabase.instance.client.from('user_post').select();
 
-    if (response.error != null) {
-      errorMessage = response.error?.message ?? 'Something went wrong!';
-    } else {
-      final encodedData = json.encode(response.data);
+      final encodedData = json.encode(response);
       final mappedJson = JsonMapper.deserialize<List<dynamic>>(encodedData);
       log('response.data: $encodedData');
       postList.clear();
       mappedJson?.forEach((element) {
         postList.add(JsonMapper.deserialize<PostDatum>(element)!);
       });
+    } catch (e, st) {
+      if (e is PostgrestException) {
+        log('Error: ${e.message}');
+      }
+
+      log(e.toString(), stackTrace: st);
     }
   }
 }

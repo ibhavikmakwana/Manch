@@ -29,20 +29,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'dart:io' as i;
-import 'package:universal_io/io.dart' as ui;
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:path/path.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_playground/models/user_profile.dart';
-import 'package:supabase_playground/screen/dashboard/profile/widget/image_picker_options_dialog.dart';
-import 'package:supabase_playground/values/app_colors.dart';
-import 'package:supabase_playground/widget/base_widget_switcher.dart';
+import 'package:manch/models/user_profile.dart';
+import 'package:manch/widget/base_widget_switcher.dart';
 
 part 'profile_screen_store.g.dart';
 
@@ -58,7 +50,7 @@ abstract class _ProfileScreenStore with Store {
   late final TextEditingController aboutController;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Future<void> _init() async {
+  _init() async {
     await getProfile();
     userNameController = TextEditingController(text: userProfile?.username);
     nameController = TextEditingController(text: userProfile?.name);
@@ -72,130 +64,68 @@ abstract class _ProfileScreenStore with Store {
   bool editProfile = false;
 
   @observable
-  BaseWidgetState profileScreenState = BaseWidgetState.loading;
+  BaseWidgetState profileScreenState = BaseWidgetState.LOADING;
 
   @action
   Future<void> getProfile({bool showLoader = false}) async {
     try {
-      if (showLoader) profileScreenState = BaseWidgetState.loading;
+      if (showLoader) profileScreenState = BaseWidgetState.LOADING;
       final userId = Supabase.instance.client.auth.currentUser?.id;
       final response = await Supabase.instance.client
           .from('profiles')
           .select()
-          .eq('id', userId)
-          .single()
-          .execute();
-      if (response.error != null) {
-        profileScreenState = BaseWidgetState.error;
-        log('Error: ${response.error?.message}');
-      } else {
-        final encodedData = json.encode(response.data);
-        final decodedData = json.decode(encodedData);
-        profileScreenState = BaseWidgetState.success;
-        userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
-        editProfile = (userProfile?.name?.isEmpty ?? true) ||
-            (userProfile?.username?.isEmpty ?? true);
+          .eq('id', '$userId')
+          .single();
+      final encodedData = json.encode(response);
+      final decodedData = json.decode(encodedData);
+      profileScreenState = BaseWidgetState.SUCCESS;
+      userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
+      editProfile = userProfile?.name == null || userProfile?.username == null;
+    } catch (e, st) {
+      if (e is PostgrestException) {
+        profileScreenState = BaseWidgetState.ERROR;
+        log('Error: ${e.message}');
       }
-    } catch (e) {
-      profileScreenState = BaseWidgetState.error;
-      log(e.toString());
+      profileScreenState = BaseWidgetState.ERROR;
+      log(e.toString(), stackTrace: st);
     }
   }
 
   @action
-  Future<void> updateProfile({bool doValidate = true}) async {
+  Future<void> updateProfile() async {
     /// TODO: Add a better validations (Bhavik Makwana)
-    if (doValidate && !formKey.currentState!.validate()) return;
+    if (formKey.currentState!.validate()) {
+      try {
+        userProfile = userProfile?.copyWith(
+          username: '${userNameController.text.trim()}',
+          name: '${nameController.text.trim()}',
+          about: '${aboutController.text.trim()}',
+        );
 
-    try {
-      userProfile = userProfile?.copyWith(
-        username: userNameController.text.trim(),
-        name: nameController.text.trim(),
-        about: aboutController.text.trim(),
-      );
-      final requestBody = JsonMapper.toMap(
-        userProfile,
-        const SerializationOptions(ignoreNullMembers: true),
-      );
-      final response = await Supabase.instance.client
-          .from('profiles')
-          .update(requestBody!)
-          .eq('id', userProfile?.id)
-          .execute();
+        final requestBody = JsonMapper.toMap(
+          userProfile,
+          SerializationOptions(ignoreNullMembers: true),
+        );
+        final response = await Supabase.instance.client
+            .from('profiles')
+            .update(requestBody!)
+            .eq('id', '${userProfile?.id}');
 
-      if (response.error != null) {
-        log('Error: ${response.toJson()}');
-      } else {
         log('Success Response: ${response.toJson()}');
         await getProfile();
+      } catch (e, st) {
+        if (e is PostgrestException) {
+          profileScreenState = BaseWidgetState.ERROR;
+          log('Error: ${e.message}');
+        }
+        log(e.toString(), stackTrace: st);
       }
-    } catch (e) {
-      log(e.toString());
     }
   }
 
   @action
-  Future<void> uploadAvatar(BuildContext context) async {
-    final ImageSource? imageSource = await showDialog(
-        context: context,
-        builder: (_) {
-          return ImagePickerOptionsDialog();
-        });
-    if (imageSource != null) {
-      final ui.File? file = await getImage(imageSource) as ui.File?;
-
-      final imageExt = extension(file!.path);
-      final fileName = userProfile?.id;
-
-      StorageResponse<String> response;
-      if (userProfile?.avatarUrl != null) {
-        response = await Supabase.instance.client.storage
-            .from('avatars')
-            .update('$fileName$imageExt', file);
-      } else {
-        response = await Supabase.instance.client.storage
-            .from('avatars')
-            .upload('$fileName$imageExt', file);
-      }
-
-      if (response.hasError) {
-        log('Status code: ${response.error?.statusCode}\nError: ${response.error?.error}\nMessage: ${response.error?.message}');
-      } else {
-        log('Success response: ${response.data}');
-        final avatarURL = await Supabase.instance.client.storage
-            .from('avatars')
-            .createSignedUrl('$fileName$imageExt', 30 * 100);
-        userProfile = userProfile?.copyWith(avatarUrl: avatarURL.data);
-        updateProfile(doValidate: false);
-      }
-    }
-  }
-
-  Future<i.File?> getImage(ImageSource imageSource) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: imageSource);
-    return ImageCropper().cropImage(
-      sourcePath: image!.path,
-      cropStyle: CropStyle.circle,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Crop image',
-        toolbarColor: AppColors.dark,
-        toolbarWidgetColor: Colors.white,
-        initAspectRatio: CropAspectRatioPreset.original,
-        lockAspectRatio: false,
-      ),
-      iosUiSettings: const IOSUiSettings(
-        minimumAspectRatio: 1.0,
-        title: 'Crop image',
-      ),
-    );
+  Future<void> uploadAvatar() async {
+    // TODO: Implement Upload Avatar of the user (Bhavik Makwana).
   }
 
   void dispose() {

@@ -25,13 +25,12 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:supabase_playground/screen/dashboard/profile/edit_profile.dart';
-import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
-import 'package:supabase_playground/screen/dashboard/profile/view_profile.dart';
-import 'package:supabase_playground/widget/base_widget_switcher.dart';
+import 'package:manch/screen/dashboard/profile/edit_profile.dart';
+import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
+import 'package:manch/screen/dashboard/profile/view_profile.dart';
+import 'package:manch/widget/base_widget_switcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

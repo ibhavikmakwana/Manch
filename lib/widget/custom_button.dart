@@ -44,15 +44,15 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       child: isLoading
-          ? const Padding(
-              padding: EdgeInsets.all(8.0),
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
                   Colors.white,
                 ),
               ),
             )
-          : Text(text!),
+          : Text('$text'),
     );
   }
 }

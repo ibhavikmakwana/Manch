@@ -27,9 +27,9 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/screen/dashboard/dashboard.dart';
-import 'package:supabase_playground/screen/onboarding/login_sign_up_screen.dart';
-import 'package:supabase_playground/screen/onboarding/splash_screen.dart';
+import 'package:manch/screen/dashboard/dashboard.dart';
+import 'package:manch/screen/onboarding/login_sign_up_screen.dart';
+import 'package:manch/screen/onboarding/splash_screen.dart';
 
 import 'values/routes.dart';
 
@@ -47,7 +47,7 @@ class RouteGenerator {
         );
       case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => const Dashboard(),
+          builder: (_) => Dashboard(),
         );
       default:
         return _unknownRoute();
@@ -58,7 +58,7 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(),
-        body: const Center(
+        body: Center(
           child: Text('Under Development'),
         ),
       );

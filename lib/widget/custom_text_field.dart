@@ -33,13 +33,11 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final bool autocorrect;
   final int? maxLength;
-  final int? maxLines;
   final String? hintText;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onSubmitted;
-  final FormFieldValidator<String>? validator;
 
   const CustomTextField({
     Key? key,
@@ -53,14 +51,12 @@ class CustomTextField extends StatelessWidget {
     this.textInputAction,
     this.keyboardType,
     this.onSubmitted,
-    this.validator,
-    this.maxLines = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Color(0x19929292),
@@ -69,15 +65,13 @@ class CustomTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextFormField(
+      child: TextField(
         controller: controller,
-        maxLines: maxLines,
         enabled: enabled,
         focusNode: focusNode,
         textInputAction: textInputAction,
         keyboardType: keyboardType,
-        onFieldSubmitted: onSubmitted,
-        validator: validator,
+        onSubmitted: onSubmitted,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
