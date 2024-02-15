@@ -32,20 +32,23 @@ import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:supabase_playground/configure_main_app.dart';
-import 'package:supabase_playground/main_store.dart';
-import 'package:supabase_playground/route_generator.dart';
-import 'package:supabase_playground/screen/onboarding/splash_screen.dart';
-import 'package:supabase_playground/values/routes.dart';
-import 'package:supabase_playground/values/theme.dart';
-
-import 'main.reflectable.dart' show initializeReflectable;
+import 'package:manch/main.reflectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:manch/core/supabase/build_config.dart';
+import 'package:manch/main_store.dart';
+import 'package:manch/route_generator.dart';
+import 'package:manch/screen/onboarding/splash_screen.dart';
+import 'package:manch/values/routes.dart';
+import 'package:manch/values/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   JsonMapper().useAdapter(mobXAdapter);
-  configureMainApp();
+  Supabase.initialize(
+    url: BuildConfig.baseUrl,
+    anonKey: BuildConfig.baseKey,
+  );
   runApp(MyApp());
 }
 
@@ -70,8 +73,7 @@ class MyApp extends StatelessWidget {
       },
       builder: (context, child) {
         SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(statusBarColor: Colors.white),
-        );
+            SystemUiOverlayStyle(statusBarColor: Colors.white));
         return child!;
       },
       home: SplashScreen(),

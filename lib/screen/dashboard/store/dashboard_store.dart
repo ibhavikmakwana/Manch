@@ -37,7 +37,7 @@ abstract class _DashboardStore with Store {
     pageController = PageController(initialPage: selectedBottomNavItem.index);
   }
   @observable
-  BottomNavItem selectedBottomNavItem = BottomNavItem.home;
+  BottomNavItem selectedBottomNavItem = BottomNavItem.HOME;
 
   late final PageController pageController;
 
@@ -53,4 +53,4 @@ abstract class _DashboardStore with Store {
   }
 }
 
-enum BottomNavItem { home, search, messages, profile }
+enum BottomNavItem { HOME, SEARCH, MESSAGES, PROFILE }

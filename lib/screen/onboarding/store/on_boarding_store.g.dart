@@ -6,10 +6,11 @@ part of 'on_boarding_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$OnBoardingStore on _OnBoardingStore, Store {
-  final _$isLoginAtom = Atom(name: '_OnBoardingStore.isLogin');
+  late final _$isLoginAtom =
+      Atom(name: '_OnBoardingStore.isLogin', context: context);
 
   @override
   bool get isLogin {
@@ -24,7 +25,8 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
     });
   }
 
-  final _$isLoadingAtom = Atom(name: '_OnBoardingStore.isLoading');
+  late final _$isLoadingAtom =
+      Atom(name: '_OnBoardingStore.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -39,37 +41,16 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_OnBoardingStore.errorMessage');
-
-  @override
-  String? get errorMessage {
-    _$errorMessageAtom.reportRead();
-    return super.errorMessage;
-  }
-
-  @override
-  set errorMessage(String? value) {
-    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
-      super.errorMessage = value;
-    });
-  }
-
-  final _$signUpAsyncAction = AsyncAction('_OnBoardingStore.signUp');
+  late final _$signUpAsyncAction =
+      AsyncAction('_OnBoardingStore.signUp', context: context);
 
   @override
   Future<void> signUp(BuildContext context) {
     return _$signUpAsyncAction.run(() => super.signUp(context));
   }
 
-  final _$createUserInDBAsyncAction =
-      AsyncAction('_OnBoardingStore.createUserInDB');
-
-  @override
-  Future<bool> createUserInDB(User? user) {
-    return _$createUserInDBAsyncAction.run(() => super.createUserInDB(user));
-  }
-
-  final _$loginAsyncAction = AsyncAction('_OnBoardingStore.login');
+  late final _$loginAsyncAction =
+      AsyncAction('_OnBoardingStore.login', context: context);
 
   @override
   Future<void> login(BuildContext context) {
@@ -80,8 +61,7 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
   String toString() {
     return '''
 isLogin: ${isLogin},
-isLoading: ${isLoading},
-errorMessage: ${errorMessage}
+isLoading: ${isLoading}
     ''';
   }
 }

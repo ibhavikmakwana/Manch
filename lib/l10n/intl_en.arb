@@ -1,11 +1,11 @@
 {
-    "login": "Login",
-    "signUp": "Sign Up",
-    "email": "Email",
-    "enterYourEmail": "Enter your email",
-    "password": "Password",
-    "enterYourPassword": "Enter your password",
-    "forgotPassword": "Forgot Password?",
-    "logOut": "Log out",
-    "confirmPassword": "Confirm password"
+  "login": "Login",
+  "signUp": "Sign Up",
+  "email": "Email",
+  "enterYourEmail": "Enter your email",
+  "password": "Password",
+  "enterYourPassword": "Enter your password",
+  "forgotPassword": "Forgot Password?",
+  "logOut": "Log out",
+  "confirmPassword": "Confirm password"
 }

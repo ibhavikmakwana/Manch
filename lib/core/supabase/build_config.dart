@@ -37,20 +37,10 @@
 /// flutter run --dart-define=BASE_URL=url_here --dart-define=BASE_KEY=key_here
 ///
 class BuildConfig {
-  BuildConfig();
+  static String get baseUrl => _getBaseUrl();
+  static String get baseKey => _getBaseKey();
 
-  static BuildConfig? _current;
+  static String _getBaseUrl() => const String.fromEnvironment('BASE_URL');
 
-  // ignore: prefer_constructors_over_static_methods
-  static BuildConfig get current {
-    _current ??= BuildConfig();
-    return _current!;
-  }
-
-  String? get baseUrl => _getBaseUrl();
-  String? get baseKey => _getBaseHey();
-
-  String? _getBaseUrl() => const String.fromEnvironment('BASE_URL');
-
-  String? _getBaseHey() => const String.fromEnvironment('BASE_KEY');
+  static String _getBaseKey() => const String.fromEnvironment('BASE_KEY');
 }

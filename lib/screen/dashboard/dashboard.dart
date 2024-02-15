@@ -28,15 +28,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:supabase_playground/screen/dashboard/home/home_screen.dart';
-import 'package:supabase_playground/screen/dashboard/profile/profile_screen.dart';
-import 'package:supabase_playground/screen/dashboard/store/dashboard_store.dart';
-import 'package:supabase_playground/values/app_colors.dart';
-import 'package:supabase_playground/values/assets.dart';
-import 'package:supabase_playground/widget/indicator_dot.dart';
-
-import 'profile/store/profile_screen_store.dart';
+import 'package:manch/screen/dashboard/home/home_screen.dart';
+import 'package:manch/screen/dashboard/profile/profile_screen.dart';
+import 'package:manch/screen/dashboard/store/dashboard_store.dart';
+import 'package:manch/values/app_colors.dart';
+import 'package:manch/values/assets.dart';
+import 'package:manch/widget/indicator_dot.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({
@@ -49,11 +46,9 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late final DashboardStore _dashboardStore;
-  late final ProfileScreenStore _profileScreenStore;
   @override
   void initState() {
     super.initState();
-    _profileScreenStore = ProfileScreenStore()..getProfile(showLoader: true);
     _dashboardStore = DashboardStore();
   }
 
@@ -61,26 +56,26 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: MultiProvider(
-        providers: [
-          Provider(create: (_) => _profileScreenStore),
+      body: PageView(
+        controller: _dashboardStore.pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          HomeScreen(),
+          Container(),
+          Container(),
+          ProfileScreen(),
         ],
-        child: PageView(
-          controller: _dashboardStore.pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            HomeScreen(),
-            Container(),
-            Container(),
-            ProfileScreen(),
-          ],
-        ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: SvgPicture.asset(SVGs.icPlus),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 8,
         clipBehavior: Clip.antiAlias,
         child: Observer(
-          builder: (_) => SizedBox(
+          builder: (_) => Container(
             height: 92,
             child: Row(
               children: [
@@ -88,28 +83,28 @@ class _DashboardState extends State<Dashboard> {
                   svgPath: SVGs.icHome,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 0,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.home);
+                    _dashboardStore.switchBottomItem(BottomNavItem.HOME);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icSend,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 1,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.search);
+                    _dashboardStore.switchBottomItem(BottomNavItem.SEARCH);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icMessage,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 2,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.messages);
+                    _dashboardStore.switchBottomItem(BottomNavItem.MESSAGES);
                   },
                 ),
                 BottomAppBarItem(
                   svgPath: SVGs.icUser,
                   isSelected: _dashboardStore.selectedBottomNavItem.index == 3,
                   onTap: () {
-                    _dashboardStore.switchBottomItem(BottomNavItem.profile);
+                    _dashboardStore.switchBottomItem(BottomNavItem.PROFILE);
                   },
                 ),
               ],
@@ -140,6 +135,7 @@ class BottomAppBarItem extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(

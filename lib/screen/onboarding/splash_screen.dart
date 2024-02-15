@@ -27,32 +27,50 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/core/supabase/auth_state.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:supabase_playground/values/app_colors.dart';
-import 'package:supabase_playground/values/assets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:manch/values/routes.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends AuthState<SplashScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.blue,
-      body: Center(
-        child: SvgPicture.asset(SVGs.logo),
-      ),
-    );
-  }
-
+class _SplashScreenState extends State<SplashScreen> {
+  final supabase = Supabase.instance.client;
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      recoverSupabaseSession();
-    });
+    _redirect();
+  }
+
+  Future<void> _redirect() async {
+    await Future.delayed(Duration.zero);
+    if (!mounted) {
+      return;
+    }
+
+    final session = supabase.auth.currentSession;
+    if (session != null) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routes.dashboard,
+        (route) => false,
+      );
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routes.login,
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Supabase Playground'),
+      ),
+    );
   }
 }

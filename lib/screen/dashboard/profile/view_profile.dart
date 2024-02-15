@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/screen/dashboard/profile/store/profile_screen_store.dart';
-import 'package:supabase_playground/widget/network_cache_images.dart';
+import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
 
 class ViewProfile extends StatelessWidget {
   final ProfileScreenStore? store;
@@ -36,10 +35,11 @@ class ViewProfile extends StatelessWidget {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    NetworkCacheImages(
-                      imageUrl: store?.userProfile?.avatarUrl,
+                    CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('${store?.userProfile?.avatarUrl}'),
                       radius: 48,
-                      circleAvatar: true,
+                      onBackgroundImageError: (_, st) {},
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -47,13 +47,13 @@ class ViewProfile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            store?.userProfile?.name ?? '',
-                            style: Theme.of(context).textTheme.headline6,
+                            '${store?.userProfile?.name}',
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             '@${store?.userProfile?.username}',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
                       ),
@@ -63,8 +63,8 @@ class ViewProfile extends StatelessWidget {
                 const SizedBox(height: 16),
                 if (store?.userProfile?.about != null) ...{
                   Text(
-                    store?.userProfile?.about ?? '',
-                    style: Theme.of(context).textTheme.subtitle2,
+                    '${store?.userProfile?.about}',
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 16),
                 },

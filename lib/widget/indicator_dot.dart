@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:supabase_playground/values/app_colors.dart';
+import 'package:manch/values/app_colors.dart';
 
 class IndicatorDot extends StatelessWidget {
   final bool? isSelected;

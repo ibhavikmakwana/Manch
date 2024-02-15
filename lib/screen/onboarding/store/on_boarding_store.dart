@@ -25,13 +25,12 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import 'package:dart_json_mapper/dart_json_mapper.dart';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_playground/models/user_profile.dart';
-import 'package:supabase_playground/values/routes.dart';
+import 'package:manch/values/routes.dart';
 
 part 'on_boarding_store.g.dart';
 
@@ -47,8 +46,6 @@ abstract class _OnBoardingStore with Store {
     confirmPasswordFocusNode = FocusNode();
   }
 
-  final GlobalKey<FormState> onBoardingFormKey = GlobalKey<FormState>();
-
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
@@ -62,57 +59,29 @@ abstract class _OnBoardingStore with Store {
   @observable
   bool isLoading = false;
 
-  @observable
-  String? errorMessage;
-
   @action
   Future<void> signUp(BuildContext context) async {
     final email = emailController.text;
     final password = passwordController.text;
-    if (!_validateEmailPassword()) return;
+    _validateEmailPassword(email, password);
+    if (email.isEmpty) {
+      return;
+    } else if (password.isEmpty) {
+      return;
+    }
 
     isLoading = true;
 
     try {
-      final response =
-          await Supabase.instance.client.auth.signUp(email, password);
-      if (response.error != null) {
-        errorMessage = response.error?.message ?? 'Something went wrong!';
-        debugPrint(response.error?.message);
-      } else {
-        final doLogin = await createUserInDB(response.data?.user);
-        if (doLogin) await login(context);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      isLoading = false;
-    }
-  }
-
-  @action
-  Future<bool> createUserInDB(User? user) async {
-    try {
-      final requestBody = JsonMapper.toMap(
-        UserProfile(id: user?.id, email: user?.email),
-        const SerializationOptions(ignoreNullMembers: true),
+      await Supabase.instance.client.auth.signUp(
+        email: email,
+        password: password,
       );
-
-      final response = await Supabase.instance.client
-          .from('profiles')
-          .insert(requestBody)
-          .execute();
-
-      if (response.error != null) {
-        debugPrint('Error: ${response.toJson()}');
-        return false;
-      } else {
-        debugPrint('Success Response: ${response.toJson()}');
-        return true;
+    } catch (e, st) {
+      if (e is PostgrestException) {
+        log('Error: ${e.message}', stackTrace: st);
       }
-    } catch (e) {
-      debugPrint(e.toString());
-      return false;
+      log(e.toString(), stackTrace: st);
     } finally {
       isLoading = false;
     }
@@ -122,32 +91,34 @@ abstract class _OnBoardingStore with Store {
   Future<void> login(BuildContext context) async {
     final email = emailController.text;
     final password = passwordController.text;
-    if (!_validateEmailPassword()) return;
-
+    _validateEmailPassword(email, password);
     try {
       isLoading = true;
-      final response = await Supabase.instance.client.auth.signIn(
+      final response = await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      if (response.error != null) {
-        errorMessage = response.error?.message ?? 'Something went wrong!';
-        debugPrint(response.error?.message);
-      } else {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.dashboard,
-          (Route<dynamic> route) => false,
-        );
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.dashboard,
+        (Route<dynamic> route) => false,
+      );
+    } catch (e, st) {
+      if (e is PostgrestException) {
+        log('Error: ${e.message}', stackTrace: st);
       }
-    } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString(), stackTrace: st);
     } finally {
       isLoading = false;
     }
   }
 
-  bool _validateEmailPassword() {
-    return onBoardingFormKey.currentState?.validate() ?? false;
+  void _validateEmailPassword(String email, String password) {
+    if (email.isEmpty) {
+      return;
+    } else if (password.isEmpty) {
+      return;
+    }
   }
 
   void dispose() {
