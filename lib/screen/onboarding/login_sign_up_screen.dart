@@ -29,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
+import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
 import 'package:manch/widget/custom_text_field.dart';
 import 'package:manch/widget/indicator_dot.dart';
@@ -167,9 +168,22 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     onPressed: () async {
                       if (_onBoardingStore.isLoading) return;
                       if (_onBoardingStore.isLogin) {
-                        _onBoardingStore.login(context);
+                        final bool canNavigate = await _onBoardingStore.login();
+                        if (canNavigate) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.dashboard,
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       } else {
-                        await _onBoardingStore.signUp(context);
+                        final bool canNavigate =
+                            await _onBoardingStore.signUp();
+                        if (canNavigate) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.dashboard,
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       }
                     },
                     isLoading: _onBoardingStore.isLoading,

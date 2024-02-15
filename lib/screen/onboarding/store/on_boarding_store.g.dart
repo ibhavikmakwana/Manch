@@ -45,16 +45,16 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
       AsyncAction('_OnBoardingStore.signUp', context: context);
 
   @override
-  Future<void> signUp(BuildContext context) {
-    return _$signUpAsyncAction.run(() => super.signUp(context));
+  Future<bool> signUp() {
+    return _$signUpAsyncAction.run(() => super.signUp());
   }
 
   late final _$loginAsyncAction =
       AsyncAction('_OnBoardingStore.login', context: context);
 
   @override
-  Future<void> login(BuildContext context) {
-    return _$loginAsyncAction.run(() => super.login(context));
+  Future<bool> login() {
+    return _$loginAsyncAction.run(() => super.login());
   }
 
   @override
