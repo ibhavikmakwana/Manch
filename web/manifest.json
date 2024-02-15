@@ -1,6 +1,6 @@
 {
-    "name": "supabase_playground",
-    "short_name": "supabase_playground",
+    "name": "manch",
+    "short_name": "manch",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
