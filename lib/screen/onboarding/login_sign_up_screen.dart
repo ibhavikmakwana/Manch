@@ -192,6 +192,19 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         : '${AppLocalizations.of(context)?.signUp}',
                   ),
                   const SizedBox(height: 32),
+                  CustomButton(
+                    onPressed: () async {
+                      final bool canNavigate =
+                          await _onBoardingStore.loginWithGoogle();
+                      if (canNavigate) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          Routes.dashboard,
+                          (Route<dynamic> route) => false,
+                        );
+                      }
+                    },
+                    text: AppLocalizations.of(context)?.loginWithGoogle,
+                  )
                 ],
               ),
             ),

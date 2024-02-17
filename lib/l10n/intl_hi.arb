@@ -7,5 +7,6 @@
     "enterYourPassword": "अपना पासवर्ड डालें",
     "forgotPassword": "पासवर्ड भूल गए?",
     "logOut": "लॉग आउट",
-    "confirmPassword": "पासवर्ड की पुष्टि कीजिये"
+    "confirmPassword": "पासवर्ड की पुष्टि कीजिये",
+    "loginWithGoogle": "गूगल से लॉग इन करें"
 }

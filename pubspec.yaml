@@ -21,8 +21,8 @@ environment:
   sdk: '>=3.2.6 <4.0.0'
 
 dependencies:
-  cupertino_icons: ^1.0.6
   cached_network_image: ^3.3.1
+  cupertino_icons: ^1.0.6
   dart_json_mapper: ^2.2.10
   dart_json_mapper_mobx: ^2.0.5
   flutter:
@@ -33,24 +33,24 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   flutter_svg: ^2.0.9
   get_it: ^7.6.7
-  google_fonts:
-  image_picker:
+  google_fonts: null
+  google_sign_in: ^6.2.1
+  image_picker: null
   intl: ^0.18.1
   mobx: ^2.3.0+1
   postgres: ^3.0.8
+  provider: null
   supabase_flutter: ^2.3.3
-  provider:
 
 dev_dependencies:
+  build_runner: ^2.4.8
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.8
+  json_serializable: null
   mobx_codegen: ^2.6.0+1
-  json_serializable:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -62,13 +62,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/svg/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -90,4 +87,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_intl:
   enabled: true
+
 # The following section is specific to Flutter.
