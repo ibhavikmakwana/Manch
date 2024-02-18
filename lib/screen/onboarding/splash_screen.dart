@@ -27,6 +27,8 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:manch/core/routes/routes_name.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:manch/values/routes.dart';
 
@@ -50,18 +52,14 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     final session = supabase.auth.currentSession;
+    while (context.canPop()) {
+      context.pop();
+    }
     if (session != null) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.dashboard,
-        (route) => false,
-      );
+      // add go_router
+      GoRouter.of(context).goNamed(RoutesName.dashboard.name);
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.login,
-        (route) => false,
-      );
+      GoRouter.of(context).goNamed(RoutesName.loginSignup.name);
     }
   }
 

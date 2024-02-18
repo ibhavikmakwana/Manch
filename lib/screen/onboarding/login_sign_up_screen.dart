@@ -28,6 +28,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
+import 'package:manch/core/routes/routes_name.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
 import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
@@ -101,10 +103,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                   const SizedBox(height: 24),
                   Text(
                     '${AppLocalizations.of(context)?.email}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
@@ -117,18 +116,13 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                   const SizedBox(height: 24),
                   Text(
                     '${AppLocalizations.of(context)?.password}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: _onBoardingStore.passwordController,
                     focusNode: _onBoardingStore.passwordFocusNode,
-                    textInputAction: _onBoardingStore.isLogin
-                        ? TextInputAction.done
-                        : TextInputAction.next,
+                    textInputAction: _onBoardingStore.isLogin ? TextInputAction.done : TextInputAction.next,
                     obscureText: true,
                     hintText: AppLocalizations.of(context)?.enterYourPassword,
                   ),
@@ -148,10 +142,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     const SizedBox(height: 24),
                     Text(
                       '${AppLocalizations.of(context)?.confirmPassword}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 16),
                     CustomTextField(
@@ -159,8 +150,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       focusNode: _onBoardingStore.confirmPasswordFocusNode,
                       textInputAction: TextInputAction.done,
                       obscureText: true,
-                      hintText:
-                          '${AppLocalizations.of(context)?.confirmPassword}',
+                      hintText: '${AppLocalizations.of(context)?.confirmPassword}',
                     ),
                   },
                   const SizedBox(height: 24),
@@ -170,26 +160,25 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                       if (_onBoardingStore.isLogin) {
                         final bool canNavigate = await _onBoardingStore.login();
                         if (canNavigate) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            Routes.dashboard,
-                            (Route<dynamic> route) => false,
-                          );
+                          // add go_router
+                          while (context.canPop()) {
+                            context.pop();
+                          }
+                          GoRouter.of(context).goNamed(RoutesName.dashboard.name);
                         }
                       } else {
-                        final bool canNavigate =
-                            await _onBoardingStore.signUp();
+                        final bool canNavigate = await _onBoardingStore.signUp();
                         if (canNavigate) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            Routes.dashboard,
-                            (Route<dynamic> route) => false,
-                          );
+                          // add go_router
+                          while (context.canPop()) {
+                            context.pop();
+                          }
+                          GoRouter.of(context).goNamed(RoutesName.dashboard.name);
                         }
                       }
                     },
                     isLoading: _onBoardingStore.isLoading,
-                    text: _onBoardingStore.isLogin
-                        ? '${AppLocalizations.of(context)?.login}'
-                        : '${AppLocalizations.of(context)?.signUp}',
+                    text: _onBoardingStore.isLogin ? '${AppLocalizations.of(context)?.login}' : '${AppLocalizations.of(context)?.signUp}',
                   ),
                   const SizedBox(height: 32),
                 ],
@@ -228,11 +217,7 @@ class CustomOnBoardingTab extends StatelessWidget {
                   '$title',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isSelected ?? false
-                            ? Theme.of(context).tabBarTheme.labelColor
-                            : Theme.of(context)
-                                .tabBarTheme
-                                .unselectedLabelColor,
+                        color: isSelected ?? false ? Theme.of(context).tabBarTheme.labelColor : Theme.of(context).tabBarTheme.unselectedLabelColor,
                       ),
                 ),
                 const SizedBox(height: 8),
