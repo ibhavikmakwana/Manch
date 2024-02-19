@@ -77,17 +77,14 @@ abstract class _OnBoardingStore with Store {
       final googleAuth = await _googleSignIn.currentUser!.authentication;
       final accessToken = googleAuth.accessToken;
       final idToken = googleAuth.idToken;
-      print(accessToken);
-      print(idToken);
       Supabase.instance.client.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken!,
         accessToken: accessToken,
       );
-      print(_googleSignIn.currentUser);
       return true;
-    } catch (error) {
-      print(error);
+    } catch (error, stackTrace) {
+      log(error.toString(), stackTrace: stackTrace);
       return false;
     }
   }
