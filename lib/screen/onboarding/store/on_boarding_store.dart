@@ -28,6 +28,8 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:manch/core/supabase/build_config.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -57,6 +59,31 @@ abstract class _OnBoardingStore with Store {
 
   @observable
   bool isLoading = false;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    serverClientId: BuildConfig.oAuthClientId,
+  );
+
+  @action
+  Future<bool> loginWithGoogle() async {
+    try {
+      await _googleSignIn.signIn();
+      if (_googleSignIn.currentUser == null) return false;
+      final googleAuth = await _googleSignIn.currentUser!.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+      if (idToken == null) return false;
+      Supabase.instance.client.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+      return true;
+    } catch (error, stackTrace) {
+      log(error.toString(), stackTrace: stackTrace);
+      return false;
+    }
+  }
 
   @action
   Future<bool> signUp() async {

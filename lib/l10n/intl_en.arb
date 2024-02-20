@@ -7,5 +7,6 @@
   "enterYourPassword": "Enter your password",
   "forgotPassword": "Forgot Password?",
   "logOut": "Log out",
-  "confirmPassword": "Confirm password"
+  "confirmPassword": "Confirm password",
+  "loginWithGoogle": "Login with Google"
 }

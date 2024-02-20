@@ -29,18 +29,20 @@
 /// While Running a flutter run or flutter build you need to pass following
 /// arguments
 ///
-/// --dart-define=BASE_URL=url_here --dart-define=BASE_KEY=key_here
+/// --dart-define=BASE_URL=url_here --dart-define=BASE_KEY=key_here --dart-define=OAUTH_CLIENT_ID=client_id_here
 ///
 ///
 /// which will look like below:
 ///
-/// flutter run --dart-define=BASE_URL=url_here --dart-define=BASE_KEY=key_here
+/// flutter run --dart-define=BASE_URL=url_here --dart-define=BASE_KEY=key_here --dart-define=OAUTH_CLIENT_ID=client_id_here
 ///
 class BuildConfig {
   static String get baseUrl => _getBaseUrl();
   static String get baseKey => _getBaseKey();
-
+  static String get oAuthClientId => _getOAuthClientId();
   static String _getBaseUrl() => const String.fromEnvironment('BASE_URL');
 
   static String _getBaseKey() => const String.fromEnvironment('BASE_KEY');
+
+  static String _getOAuthClientId() => const String.fromEnvironment('OAUTH_CLIENT_ID');
 }

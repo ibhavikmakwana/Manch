@@ -83,7 +83,7 @@ create policy "Anyone can update an avatar."
 3. After successfully running above query get the Base url and Base key and pass it to the command line args. while running flutter app.
 
 ```dart
-flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key
+flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key --dart-define=OAUTH_CLIENT_ID=oauth_client_id
 ```
 
 That's it! You'll be able to run this app, Ping me if you stuck on any step.
