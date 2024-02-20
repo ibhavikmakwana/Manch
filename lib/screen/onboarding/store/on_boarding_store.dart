@@ -59,27 +59,23 @@ abstract class _OnBoardingStore with Store {
 
   @observable
   bool isLoading = false;
-  static const List<String> scopes = <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ];
 
   GoogleSignIn _googleSignIn = GoogleSignIn(
     serverClientId: BuildConfig.oAuthClientId,
-    scopes: scopes,
   );
 
   @action
   Future<bool> loginWithGoogle() async {
     try {
       await _googleSignIn.signIn();
-
+      if (_googleSignIn.currentUser == null) return false;
       final googleAuth = await _googleSignIn.currentUser!.authentication;
       final accessToken = googleAuth.accessToken;
       final idToken = googleAuth.idToken;
+      if (idToken == null) return false;
       Supabase.instance.client.auth.signInWithIdToken(
         provider: OAuthProvider.google,
-        idToken: idToken!,
+        idToken: idToken,
         accessToken: accessToken,
       );
       return true;
