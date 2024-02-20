@@ -140,7 +140,10 @@ class BottomAppBarItem extends StatelessWidget {
           children: [
             SvgPicture.asset(
               svgPath,
-              color: isSelected ? AppColors.dark : null,
+              colorFilter: ColorFilter.mode(
+                isSelected ? AppColors.dark : AppColors.gray,
+                BlendMode.srcIn,
+              ),
             ),
             const SizedBox(height: 8),
             IndicatorDot(isSelected: isSelected),
