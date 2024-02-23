@@ -27,6 +27,8 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:manch/core/routes/routes_name.dart';
 import 'package:manch/values/routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -46,11 +48,10 @@ class HomeScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await Supabase.instance.client.auth.signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  Routes.login,
-                  ModalRoute.withName(Routes.initial),
-                );
+                while (context.canPop()) {
+                  context.pop();
+                }
+                GoRouter.of(context).goNamed(RoutesName.loginSignup.name);
               },
               child: Text(
                 '${AppLocalizations.of(context)?.logOut}',

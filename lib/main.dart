@@ -27,11 +27,11 @@
  */
 
 import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
-import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart'
-    show mobXAdapter;
+import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart' show mobXAdapter;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:manch/core/routes/routes.dart';
 import 'package:manch/main.reflectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:manch/core/supabase/build_config.dart';
@@ -56,11 +56,10 @@ class MyApp extends StatelessWidget {
   final MainStore _mainStore = MainStore();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Supabase Playground',
       theme: AppTheme.lightTheme,
-      initialRoute: Routes.initial,
-      onGenerateRoute: RouteGenerator.generateRoute,
+      routerConfig: goRouter,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       debugShowCheckedModeBanner: false,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -72,11 +71,9 @@ class MyApp extends StatelessWidget {
         return locale;
       },
       builder: (context, child) {
-        SystemChrome.setSystemUIOverlayStyle(
-            SystemUiOverlayStyle(statusBarColor: Colors.white));
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.white));
         return child!;
       },
-      home: SplashScreen(),
     );
   }
 }
