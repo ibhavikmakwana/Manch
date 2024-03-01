@@ -139,6 +139,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Login with Google`
+  String get loginWithGoogle {
+    return Intl.message(
+      'Login with Google',
+      name: 'loginWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

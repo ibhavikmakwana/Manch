@@ -28,7 +28,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
+import 'package:manch/values/assets.dart';
 import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
 import 'package:manch/widget/custom_text_field.dart';
@@ -67,9 +69,10 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 32),
-                  FlutterLogo(
-                    size: 64,
-                    style: FlutterLogoStyle.stacked,
+                  SvgPicture.asset(
+                    SVGs.icAppIconWithoutBackground,
+                    height: 64,
+                    width: 64,
                   ),
                   const SizedBox(height: 32),
                   Row(
