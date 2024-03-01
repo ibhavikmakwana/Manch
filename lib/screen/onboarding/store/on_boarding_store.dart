@@ -38,6 +38,7 @@ part 'on_boarding_store.g.dart';
 class OnBoardingStore = _OnBoardingStore with _$OnBoardingStore;
 
 abstract class _OnBoardingStore with Store {
+  static const String TAG = 'OnBoardingStore';
   _OnBoardingStore() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
@@ -60,6 +61,9 @@ abstract class _OnBoardingStore with Store {
   @observable
   bool isLoading = false;
 
+  @observable
+  String? error;
+
   GoogleSignIn _googleSignIn = GoogleSignIn(
     serverClientId: BuildConfig.oAuthClientId,
   );
@@ -80,7 +84,7 @@ abstract class _OnBoardingStore with Store {
       );
       return true;
     } catch (error, stackTrace) {
-      log(error.toString(), stackTrace: stackTrace);
+      log("$TAG: error", stackTrace: stackTrace);
       return false;
     }
   }
@@ -104,9 +108,12 @@ abstract class _OnBoardingStore with Store {
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {
-        log('Error: ${e.message}', stackTrace: st);
+        log('$TAG Error: ${e.message}', stackTrace: st);
       }
-      log(e.toString(), stackTrace: st);
+      log('$TAG Error: $e', stackTrace: st);
+      if (e is AuthException) {
+        error = e.message;
+      }
       return false;
     } finally {
       isLoading = false;
@@ -130,9 +137,12 @@ abstract class _OnBoardingStore with Store {
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {
-        log('Error: ${e.message}', stackTrace: st);
+        log('$TAG PostgrestException: ${e.message}', stackTrace: st);
       }
-      log(e.toString(), stackTrace: st);
+      log('$TAG Error: $e', stackTrace: st);
+      if (e is AuthException) {
+        error = e.message;
+      }
       return false;
     } finally {
       isLoading = false;

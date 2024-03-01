@@ -41,6 +41,30 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
     });
   }
 
+  late final _$errorAtom =
+      Atom(name: '_OnBoardingStore.error', context: context);
+
+  @override
+  String? get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String? value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
+  late final _$loginWithGoogleAsyncAction =
+      AsyncAction('_OnBoardingStore.loginWithGoogle', context: context);
+
+  @override
+  Future<bool> loginWithGoogle() {
+    return _$loginWithGoogleAsyncAction.run(() => super.loginWithGoogle());
+  }
+
   late final _$signUpAsyncAction =
       AsyncAction('_OnBoardingStore.signUp', context: context);
 
@@ -61,7 +85,8 @@ mixin _$OnBoardingStore on _OnBoardingStore, Store {
   String toString() {
     return '''
 isLogin: ${isLogin},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+error: ${error}
     ''';
   }
 }

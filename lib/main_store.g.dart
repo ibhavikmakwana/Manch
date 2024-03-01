@@ -25,6 +25,22 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
+  late final _$themeModeAtom =
+      Atom(name: '_MainStore.themeMode', context: context);
+
+  @override
+  ThemeMode get themeMode {
+    _$themeModeAtom.reportRead();
+    return super.themeMode;
+  }
+
+  @override
+  set themeMode(ThemeMode value) {
+    _$themeModeAtom.reportWrite(value, super.themeMode, () {
+      super.themeMode = value;
+    });
+  }
+
   late final _$_MainStoreActionController =
       ActionController(name: '_MainStore', context: context);
 
@@ -42,7 +58,8 @@ mixin _$MainStore on _MainStore, Store {
   @override
   String toString() {
     return '''
-currentLocale: ${currentLocale}
+currentLocale: ${currentLocale},
+themeMode: ${themeMode}
     ''';
   }
 }

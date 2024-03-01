@@ -35,6 +35,7 @@ import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
 import 'package:manch/widget/custom_text_field.dart';
 import 'package:manch/widget/indicator_dot.dart';
+import 'package:mobx/mobx.dart';
 
 class LoginSignUpScreen extends StatefulWidget {
   @override
@@ -44,14 +45,33 @@ class LoginSignUpScreen extends StatefulWidget {
 class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   late final OnBoardingStore _onBoardingStore;
 
+  late final ReactionDisposer _disposer;
+
   @override
   void initState() {
     super.initState();
     _onBoardingStore = OnBoardingStore();
+    _disposer = autorun((_) {
+      if (_onBoardingStore.error?.isNotEmpty == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${_onBoardingStore.error}',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onError,
+                  ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        _onBoardingStore.error = null;
+      }
+    });
   }
 
   @override
   void dispose() {
+    _disposer();
     _onBoardingStore.dispose();
     super.dispose();
   }
