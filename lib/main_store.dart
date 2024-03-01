@@ -26,6 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobx/mobx.dart';
 
@@ -36,6 +37,9 @@ class MainStore = _MainStore with _$MainStore;
 abstract class _MainStore with Store {
   @observable
   Locale? currentLocale = AppLocalizations.supportedLocales[0];
+
+  @observable
+  ThemeMode themeMode = ThemeMode.system;
 
   @action
   void setCurrentLocale(String languageCode) {

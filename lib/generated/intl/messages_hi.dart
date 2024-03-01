@@ -33,6 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("पासवर्ड भूल गए?"),
         "logOut": MessageLookupByLibrary.simpleMessage("लॉग आउट"),
         "login": MessageLookupByLibrary.simpleMessage("लॉग इन करें"),
+        "loginWithGoogle":
+            MessageLookupByLibrary.simpleMessage("गूगल से लॉग इन करें"),
         "password": MessageLookupByLibrary.simpleMessage("कुंजिका"),
         "signUp": MessageLookupByLibrary.simpleMessage("साइन अप करें")
       };

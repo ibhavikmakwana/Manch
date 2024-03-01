@@ -57,8 +57,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Supabase Playground',
-      theme: AppTheme.lightTheme,
+      title: 'Manch',
+      theme: MaterialTheme(TextTheme()).light(),
+      darkTheme: MaterialTheme(TextTheme()).dark(),
+      themeMode: _mainStore.themeMode,
       initialRoute: Routes.initial,
       onGenerateRoute: RouteGenerator.generateRoute,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
