@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
-
-import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/material.dart';
+import 'package:manch/data/models/post_response.dart';
+import 'package:manch/data/repositories/post_repository.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:manch/models/post_response.dart';
 import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
 
 part 'home_screen_store.g.dart';
@@ -18,6 +16,8 @@ abstract class _HomeScreenStore with Store {
   _HomeScreenStore({
     required this.profileStore,
   });
+
+  final PostRepository _repository = PostRepository();
 
   final GlobalKey<FormState> postFormKey = GlobalKey();
 
@@ -33,38 +33,25 @@ abstract class _HomeScreenStore with Store {
     if (!postFormKey.currentState!.validate()) return;
 
     try {
-      log('userProfile ${profileStore.userProfile?.name}');
-      final response = await Supabase.instance.client.from('user_post').insert(
-        {
-          'post': postController.text.trim(),
-          'user_id': Supabase.instance.client.auth.currentUser?.id,
-          'user_meta': JsonMapper.toJson(profileStore.userProfile),
-        },
+      final post = await _repository.sharePost(
+        post: postController.text.trim(),
+        userId: Supabase.instance.client.auth.currentUser?.id ?? '',
+        userMeta: profileStore.userProfile?.toJson(),
       );
-
-      if (response.error != null) {
-        errorMessage = response.error?.message ?? 'Something went wrong!';
-      } else {
-        postController.clear();
-        fetchPosts();
+      postList.insert(0, post);
+    } catch (e, st) {
+      if (e is PostgrestException) {
+        log('Error: ${e.message}');
       }
-    } catch (e) {
-      log(e.toString());
+
+      log(e.toString(), stackTrace: st);
     }
   }
 
   Future<void> fetchPosts() async {
     try {
-      final response =
-          await Supabase.instance.client.from('user_post').select();
-
-      final encodedData = json.encode(response);
-      final mappedJson = JsonMapper.deserialize<List<dynamic>>(encodedData);
-      log('response.data: $encodedData');
-      postList.clear();
-      mappedJson?.forEach((element) {
-        postList.add(JsonMapper.deserialize<PostDatum>(element)!);
-      });
+      final posts = await _repository.fetchPosts();
+      postList = ObservableList.of(posts);
     } catch (e, st) {
       if (e is PostgrestException) {
         log('Error: ${e.message}');

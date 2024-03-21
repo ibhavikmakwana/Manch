@@ -26,14 +26,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:manch/data/repositories/user_profile_repository.dart';
 import 'package:mobx/mobx.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:manch/models/user_profile.dart';
+import 'package:manch/data/models/user_profile.dart';
 import 'package:manch/widget/base_widget_switcher.dart';
 
 part 'profile_screen_store.g.dart';
@@ -41,6 +40,7 @@ part 'profile_screen_store.g.dart';
 class ProfileScreenStore = _ProfileScreenStore with _$ProfileScreenStore;
 
 abstract class _ProfileScreenStore with Store {
+  final UserProfileRepository _repository = UserProfileRepository();
   _ProfileScreenStore() {
     _init();
   }
@@ -70,17 +70,9 @@ abstract class _ProfileScreenStore with Store {
   Future<void> getProfile({bool showLoader = false}) async {
     try {
       if (showLoader) profileScreenState = BaseWidgetState.LOADING;
-      final userId = Supabase.instance.client.auth.currentUser?.id;
-      final response = await Supabase.instance.client
-          .from('profiles')
-          .select()
-          .eq('id', '$userId')
-          .single();
-      final encodedData = json.encode(response);
-      final decodedData = json.decode(encodedData);
-      profileScreenState = BaseWidgetState.SUCCESS;
-      userProfile = JsonMapper.deserialize<UserProfile>(decodedData);
+      userProfile = await _repository.getProfile();
       editProfile = userProfile?.name == null || userProfile?.username == null;
+      profileScreenState = BaseWidgetState.SUCCESS;
     } catch (e, st) {
       if (e is PostgrestException) {
         profileScreenState = BaseWidgetState.ERROR;
@@ -97,25 +89,16 @@ abstract class _ProfileScreenStore with Store {
     if (formKey.currentState!.validate()) {
       try {
         userProfile = userProfile?.copyWith(
-          username: '${userNameController.text.trim()}',
-          name: '${nameController.text.trim()}',
-          about: '${aboutController.text.trim()}',
+          email: userProfile?.email,
+          avatarUrl: userProfile?.avatarUrl,
+          username: userNameController.text.trim(),
+          name: nameController.text.trim(),
+          about: aboutController.text.trim(),
         );
-
-        final requestBody = JsonMapper.toMap(
-          userProfile,
-          SerializationOptions(ignoreNullMembers: true),
-        );
-        final response = await Supabase.instance.client
-            .from('profiles')
-            .update(requestBody!)
-            .eq('id', '${userProfile?.id}');
-
-        log('Success Response: ${response.toJson()}');
-        await getProfile();
+        userProfile = await _repository.updateProfile(userProfile!);
+        editProfile = userProfile?.name == null || userProfile?.username == null;
       } catch (e, st) {
         if (e is PostgrestException) {
-          profileScreenState = BaseWidgetState.ERROR;
           log('Error: ${e.message}');
         }
         log(e.toString(), stackTrace: st);

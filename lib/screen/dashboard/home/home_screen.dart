@@ -26,13 +26,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:manch/l10n/app_localizations.dart';
+import 'package:manch/screen/dashboard/home/store/home_screen_store.dart';
+import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
 import 'package:manch/values/routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    HomeScreenStore(profileStore: ProfileScreenStore()).fetchPosts();
     return Column(
       children: [
         AppBar(

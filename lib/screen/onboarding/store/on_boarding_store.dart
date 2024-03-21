@@ -39,9 +39,9 @@ class OnBoardingStore = _OnBoardingStore with _$OnBoardingStore;
 
 abstract class _OnBoardingStore with Store {
   _OnBoardingStore() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
+    emailController = TextEditingController(text: 'bhavikmakwana43@gmail.com');
+    passwordController = TextEditingController(text: '1234567890');
+    confirmPasswordController = TextEditingController(text: '1234567890');
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
     confirmPasswordFocusNode = FocusNode();
@@ -97,10 +97,11 @@ abstract class _OnBoardingStore with Store {
     isLoading = true;
 
     try {
-      await Supabase.instance.client.auth.signUp(
+      final res = await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
       );
+      print('Response: ${response.user?.appMetadata}');
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {
@@ -123,10 +124,13 @@ abstract class _OnBoardingStore with Store {
     }
     try {
       isLoading = true;
-      await Supabase.instance.client.auth.signInWithPassword(
+      final response = await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
+      print('Response: ${res.user?.appMetadata}');
+      print('Response: ${res.user?.userMetadata}');
+
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {

@@ -26,13 +26,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper;
-import 'package:dart_json_mapper_mobx/dart_json_mapper_mobx.dart'
-    show mobXAdapter;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:manch/main.reflectable.dart';
+import 'package:manch/l10n/app_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:manch/core/supabase/build_config.dart';
 import 'package:manch/main_store.dart';
@@ -43,8 +39,6 @@ import 'package:manch/values/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeReflectable();
-  JsonMapper().useAdapter(mobXAdapter);
   Supabase.initialize(
     url: BuildConfig.baseUrl,
     anonKey: BuildConfig.baseKey,
@@ -56,6 +50,10 @@ class MyApp extends StatelessWidget {
   final MainStore _mainStore = MainStore();
   @override
   Widget build(BuildContext context) {
+    // Status bar color
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.white),
+    );
     return MaterialApp(
       title: 'Manch',
       theme: MaterialTheme(TextTheme()).light(),

@@ -26,7 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:manch/l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
@@ -59,6 +59,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -227,7 +228,7 @@ class CustomOnBoardingTab extends StatelessWidget {
   }) : super(key: key);
 
   final VoidCallback? onPressed;
-  final bool? isSelected;
+  final bool isSelected;
   final String? title;
 
   @override

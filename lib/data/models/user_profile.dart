@@ -25,51 +25,22 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import 'package:dart_json_mapper/dart_json_mapper.dart';
-import 'package:mobx/mobx.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'user_profile.g.dart';
 
-@jsonSerializable
-class UserProfile extends _UserProfile with _$UserProfile {
-  UserProfile({
-    final String? id,
-    String? email,
-    String? username,
-    String? avatarUrl,
-    String? about,
-    String? name,
-  }) : super(
-          id: id,
-          email: email,
-          username: username,
-          avatarUrl: avatarUrl,
-          about: about,
-          name: name,
-        );
-}
-
-@jsonSerializable
-abstract class _UserProfile with Store {
-  @JsonProperty(name: 'id')
+@JsonSerializable(includeIfNull: false)
+class UserProfile {
   late final String? id;
-
-  @JsonProperty(name: 'email')
   String? email;
-
-  @JsonProperty(name: 'user_name')
+  @JsonKey(name: 'user_name')
   String? username;
-
-  @JsonProperty(name: 'name')
   String? name;
-
-  @JsonProperty(name: 'avatar_url')
+  @JsonKey(name: 'avatar_url')
   String? avatarUrl;
-
-  @JsonProperty(name: 'about')
   String? about;
 
-  _UserProfile({
+  UserProfile({
     this.id,
     this.email,
     this.username,
@@ -78,7 +49,7 @@ abstract class _UserProfile with Store {
     this.name,
   });
 
-  copyWith({
+  UserProfile copyWith({
     String? email,
     String? username,
     String? name,
@@ -94,4 +65,9 @@ abstract class _UserProfile with Store {
       about: this.about = about ?? this.about,
     );
   }
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 }

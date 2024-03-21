@@ -44,5 +44,14 @@ class BuildConfig {
 
   static String _getBaseKey() => const String.fromEnvironment('BASE_KEY');
 
-  static String _getOAuthClientId() => const String.fromEnvironment('OAUTH_CLIENT_ID');
+  static String _getOAuthClientId() =>
+      const String.fromEnvironment('OAUTH_CLIENT_ID');
+
+  // Image Kit
+  static String get imageKitUrlEndpoint => _getImageKitUrlEndpoint();
+  static String get imageKitPublicKey => _getImageKitPublicKey();
+  static String _getImageKitUrlEndpoint() =>
+      const String.fromEnvironment('IMAGE_KIT_URL_ENDPOINT');
+  static String _getImageKitPublicKey() =>
+      const String.fromEnvironment('IMAGE_KIT_PUBLIC_KEY');
 }
