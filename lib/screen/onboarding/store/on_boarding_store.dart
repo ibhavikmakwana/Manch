@@ -97,11 +97,10 @@ abstract class _OnBoardingStore with Store {
     isLoading = true;
 
     try {
-      final res = await Supabase.instance.client.auth.signUp(
+      await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
       );
-      print('Response: ${response.user?.appMetadata}');
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {
@@ -124,13 +123,10 @@ abstract class _OnBoardingStore with Store {
     }
     try {
       isLoading = true;
-      final response = await Supabase.instance.client.auth.signInWithPassword(
+      await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      print('Response: ${res.user?.appMetadata}');
-      print('Response: ${res.user?.userMetadata}');
-
       return true;
     } catch (e, st) {
       if (e is PostgrestException) {
