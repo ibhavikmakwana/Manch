@@ -26,12 +26,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
+import 'package:manch/core/routes/routes.dart';
 import 'package:manch/core/routes/routes_name.dart';
 import 'package:manch/l10n/app_localizations.dart';
 import 'package:manch/screen/dashboard/home/store/home_screen_store.dart';
 import 'package:manch/screen/dashboard/profile/store/profile_screen_store.dart';
+import 'package:manch/values/extensions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -51,10 +51,7 @@ class HomeScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await Supabase.instance.client.auth.signOut();
-                while (context.canPop()) {
-                  context.pop();
-                }
-                GoRouter.of(context).goNamed(RoutesName.loginSignup.name);
+                goRouter.goNamedAndRemoveUntil(RoutesName.loginSignup.name);
               },
               child: Text(
                 '${AppLocalizations.of(context)?.logOut}',

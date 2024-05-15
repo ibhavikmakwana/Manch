@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 extension BuildContextX on BuildContext {
@@ -42,5 +43,24 @@ extension DateTimeX on DateTime {
     } else {
       return 'Just now';
     }
+  }
+}
+
+extension GoNamedAndRemoveUntil on GoRouter {
+  void goNamedAndRemoveUntil(
+    String routeName, {
+    Map<String, String>? pathParams,
+    Map<String, dynamic>? queryParams,
+    Object? extra,
+  }) {
+    while (canPop()) {
+      pop();
+    }
+    goNamed(
+      routeName,
+      pathParameters: pathParams ?? {},
+      queryParameters: queryParams ?? {},
+      extra: extra,
+    );
   }
 }

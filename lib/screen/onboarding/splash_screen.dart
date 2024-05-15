@@ -28,7 +28,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manch/core/routes/routes.dart';
 import 'package:manch/core/routes/routes_name.dart';
+import 'package:manch/values/extensions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:manch/values/routes.dart';
 
@@ -52,14 +54,12 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     final session = supabase.auth.currentSession;
-    while (context.canPop()) {
-      context.pop();
-    }
+
     if (session != null) {
       // add go_router
-      GoRouter.of(context).goNamed(RoutesName.dashboard.name);
+      goRouter.goNamedAndRemoveUntil(RoutesName.dashboard.name);
     } else {
-      GoRouter.of(context).goNamed(RoutesName.loginSignup.name);
+      goRouter.goNamedAndRemoveUntil(RoutesName.loginSignup.name);
     }
   }
 

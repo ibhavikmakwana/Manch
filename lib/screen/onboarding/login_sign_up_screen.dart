@@ -26,6 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
+import 'package:manch/core/routes/routes.dart';
 import 'package:manch/l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +34,7 @@ import 'package:manch/core/routes/routes_name.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
 import 'package:manch/values/assets.dart';
+import 'package:manch/values/extensions.dart';
 import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
 import 'package:manch/widget/custom_text_field.dart';
@@ -165,19 +167,13 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                         final bool canNavigate = await _onBoardingStore.login();
                         if (canNavigate) {
                           // add go_router
-                          while (context.canPop()) {
-                            context.pop();
-                          }
-                          GoRouter.of(context).goNamed(RoutesName.dashboard.name);
+                          goRouter.goNamedAndRemoveUntil(RoutesName.dashboard.name);
                         }
                       } else {
                         final bool canNavigate = await _onBoardingStore.signUp();
                         if (canNavigate) {
                           // add go_router
-                          while (context.canPop()) {
-                            context.pop();
-                          }
-                          GoRouter.of(context).goNamed(RoutesName.dashboard.name);
+                          goRouter.goNamedAndRemoveUntil(RoutesName.dashboard.name);
                         }
                       }
                     },
@@ -189,10 +185,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     onPressed: () async {
                       final bool canNavigate = await _onBoardingStore.loginWithGoogle();
                       if (canNavigate) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          Routes.dashboard,
-                          (Route<dynamic> route) => false,
-                        );
+                        goRouter.goNamedAndRemoveUntil(RoutesName.dashboard.name);
                       }
                     },
                     text: AppLocalizations.of(context)?.loginWithGoogle,
