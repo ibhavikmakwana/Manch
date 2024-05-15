@@ -23,25 +23,27 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.6
   cached_network_image: ^3.3.1
-  dart_json_mapper: ^2.2.10
-  dart_json_mapper_mobx: ^2.0.5
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   flutter_mobx: ^2.2.0+2
+  google_sign_in: ^6.2.1
   flutter_secure_storage: ^9.0.0
   flutter_svg: ^2.0.9
   get_it: ^7.6.7
   google_fonts:
   image_picker:
+  imagekit: ^0.0.5
   intl: ^0.18.1
+  json_annotation: ^4.8.1
   mobx: ^2.3.0+1
   postgres: ^3.0.8
   supabase_flutter: ^2.3.3
   provider:
   go_router: ^13.2.0
 
+  flutter_gen: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

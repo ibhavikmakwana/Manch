@@ -1,4 +1,7 @@
 # Social Media App (नाम में क्या रखा है :P) [![Analyze](https://github.com/ibhavikmakwana/manch/actions/workflows/analyze_actions.yml/badge.svg)](https://github.com/ibhavikmakwana/manch/actions/workflows/analyze_actions.yml)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 ## Screenshots
@@ -83,7 +86,7 @@ create policy "Anyone can update an avatar."
 3. After successfully running above query get the Base url and Base key and pass it to the command line args. while running flutter app.
 
 ```dart
-flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key
+flutte run --dart-define=BASE_URL=supabase_base_url --dart-define=BASE_KEY=supabase_base_key --dart-define=OAUTH_CLIENT_ID=oauth_client_id
 ```
 
 That's it! You'll be able to run this app, Ping me if you stuck on any step.
@@ -101,3 +104,25 @@ Let's create an open source alternative of the social media apps out there toget
 https://www.figma.com/proto/pVVxJrrPmgo2OR2D5yEj0o/dianfei-SocialAppUIKit-Updated-(Community)?node-id=25%3A1577&scaling=min-zoom
 
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Mittal-Sudhanshu"><img src="https://avatars.githubusercontent.com/u/95603164?v=4?s=100" width="100px;" alt="Sudhanshu Mittal"/><br /><sub><b>Sudhanshu Mittal</b></sub></a><br /><a href="https://github.com/ibhavikmakwana/Manch/commits?author=Mittal-Sudhanshu" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

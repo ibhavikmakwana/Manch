@@ -26,11 +26,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:manch/l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manch/core/routes/routes_name.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:manch/screen/onboarding/store/on_boarding_store.dart';
+import 'package:manch/values/assets.dart';
 import 'package:manch/values/routes.dart';
 import 'package:manch/widget/custom_button.dart';
 import 'package:manch/widget/custom_text_field.dart';
@@ -59,6 +61,7 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -69,9 +72,10 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 32),
-                  FlutterLogo(
-                    size: 64,
-                    style: FlutterLogoStyle.stacked,
+                  SvgPicture.asset(
+                    SVGs.icAppIconWithoutBackground,
+                    height: 64,
+                    width: 64,
                   ),
                   const SizedBox(height: 32),
                   Row(
@@ -181,6 +185,18 @@ class _LoginSignUpScreenState extends State<LoginSignUpScreen> {
                     text: _onBoardingStore.isLogin ? '${AppLocalizations.of(context)?.login}' : '${AppLocalizations.of(context)?.signUp}',
                   ),
                   const SizedBox(height: 32),
+                  CustomButton(
+                    onPressed: () async {
+                      final bool canNavigate = await _onBoardingStore.loginWithGoogle();
+                      if (canNavigate) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          Routes.dashboard,
+                          (Route<dynamic> route) => false,
+                        );
+                      }
+                    },
+                    text: AppLocalizations.of(context)?.loginWithGoogle,
+                  )
                 ],
               ),
             ),
@@ -200,7 +216,7 @@ class CustomOnBoardingTab extends StatelessWidget {
   }) : super(key: key);
 
   final VoidCallback? onPressed;
-  final bool? isSelected;
+  final bool isSelected;
   final String? title;
 
   @override

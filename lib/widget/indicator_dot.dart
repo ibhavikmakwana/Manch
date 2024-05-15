@@ -29,9 +29,16 @@ import 'package:flutter/material.dart';
 import 'package:manch/values/app_colors.dart';
 
 class IndicatorDot extends StatelessWidget {
-  final bool? isSelected;
+  final bool isSelected;
+  final Color selectedColor;
+  final Color unSelectedColor;
 
-  const IndicatorDot({Key? key, this.isSelected}) : super(key: key);
+  const IndicatorDot({
+    super.key,
+    this.isSelected = false,
+    this.selectedColor = AppColors.blue,
+    this.unSelectedColor = AppColors.screenBackground,
+  });
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -39,8 +46,7 @@ class IndicatorDot extends StatelessWidget {
       height: 6,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color:
-            isSelected ?? false ? AppColors.blue : AppColors.screenBackground,
+        color: isSelected ? selectedColor : unSelectedColor,
       ),
       duration: const Duration(milliseconds: 350),
     );

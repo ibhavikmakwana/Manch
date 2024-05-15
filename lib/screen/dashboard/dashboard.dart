@@ -68,9 +68,13 @@ class _DashboardState extends State<Dashboard> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: SvgPicture.asset(SVGs.icPlus),
+        child: SvgPicture.asset(SVGs.icPlus,
+            colorFilter: ColorFilter.mode(
+              AppColors.dark,
+              BlendMode.srcIn,
+            )),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 8,
         clipBehavior: Clip.antiAlias,
@@ -140,10 +144,17 @@ class BottomAppBarItem extends StatelessWidget {
           children: [
             SvgPicture.asset(
               svgPath,
-              color: isSelected ? AppColors.dark : null,
+              colorFilter: ColorFilter.mode(
+                isSelected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
+                BlendMode.srcIn,
+              ),
             ),
             const SizedBox(height: 8),
-            IndicatorDot(isSelected: isSelected),
+            IndicatorDot(
+              isSelected: isSelected,
+              selectedColor: Theme.of(context).primaryColor,
+              unSelectedColor: Colors.transparent,
+            ),
           ],
         ),
       ),

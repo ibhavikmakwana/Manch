@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Mittal-Sudhanshu",
+      "name": "Sudhanshu Mittal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95603164?v=4",
+      "profile": "https://github.com/Mittal-Sudhanshu",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "Manch",
+  "projectOwner": "ibhavikmakwana"
+}
